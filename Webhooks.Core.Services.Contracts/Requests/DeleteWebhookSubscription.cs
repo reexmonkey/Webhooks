@@ -7,8 +7,8 @@ namespace Webhooks.Core.Services.Contracts.Requests
     /// <summary>
     /// Specifies a service request to delete a webhook subscription.
     /// </summary>
-    [Api("pecifies a service request to delete a webhook subscription.")]
-    public abstract class DeleteWebhookSubscriptionBase : IPost, IReturn<WebhookSubscriptionResponse>
+    [Api("Specifies a service request to delete a webhook subscription.")]
+    public abstract class DeleteWebhookSubscriptionBase : IDelete, IReturn<WebhookSubscriptionResponse>
     {
         /// <summary>
         /// The unique identifier of the webhook subscription.
@@ -37,7 +37,7 @@ namespace Webhooks.Core.Services.Contracts.Requests
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
     [Tag("Sync")]
-    [Route("/sync/webhooks/subscriptions/{Id}/delete", "POST")]
+    [Route("/sync/webhooks/subscriptions/{Id}", "DELETE")]
     public sealed class DeleteWebhookSubscription : DeleteWebhookSubscriptionBase
     {
     }
@@ -50,7 +50,7 @@ namespace Webhooks.Core.Services.Contracts.Requests
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
     [Tag("Async")]
-    [Route("/sync/webhooks/subscriptions/{Id}/delete", "POST")]
+    [Route("/async/webhooks/subscriptions/{Id}", "DELETE")]
     public sealed class DeleteWebhookSubscriptionAsync : DeleteWebhookSubscriptionBase
     {
     }

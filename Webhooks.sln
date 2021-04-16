@@ -23,11 +23,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhooks.Core.Repositories.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhooks.Core.Services.Contracts", "Webhooks.Core.Services.Contracts\Webhooks.Core.Services.Contracts.csproj", "{27CBB52D-E479-4902-BB64-17C93EA30619}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webhooks.Infrastructure.Services.Concretes", "Webhooks.Infrastructure.Services.Concretes\Webhooks.Infrastructure.Services.Concretes.csproj", "{45711156-04DD-460B-96D2-96AC73A55FD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhooks.Infrastructure.Services.Concretes", "Webhooks.Infrastructure.Services.Concretes\Webhooks.Infrastructure.Services.Concretes.csproj", "{45711156-04DD-460B-96D2-96AC73A55FD7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 - Repositories", "01 - Repositories", "{4A0C7541-E749-46B8-85EE-F062E19EBDDC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 - Services", "02 - Services", "{AD88F20A-6A2A-41D5-B1CB-8FE31E70747E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webhooks.Core.Repositories.Ormlite", "Webhooks.Core.Repositories.Ormlite\Webhooks.Core.Repositories.Ormlite.csproj", "{E3DCDD9A-90D1-44A8-AADC-C84322056849}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webhooks.Core.Repositories.MongoDb", "Webhooks.Core.Repositories.MongoDb\Webhooks.Core.Repositories.MongoDb.csproj", "{9CC78889-E599-4CE2-BD0C-0E4A5426EFD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,14 @@ Global
 		{45711156-04DD-460B-96D2-96AC73A55FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45711156-04DD-460B-96D2-96AC73A55FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45711156-04DD-460B-96D2-96AC73A55FD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3DCDD9A-90D1-44A8-AADC-C84322056849}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3DCDD9A-90D1-44A8-AADC-C84322056849}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3DCDD9A-90D1-44A8-AADC-C84322056849}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3DCDD9A-90D1-44A8-AADC-C84322056849}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CC78889-E599-4CE2-BD0C-0E4A5426EFD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CC78889-E599-4CE2-BD0C-0E4A5426EFD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CC78889-E599-4CE2-BD0C-0E4A5426EFD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CC78889-E599-4CE2-BD0C-0E4A5426EFD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +77,8 @@ Global
 		{45711156-04DD-460B-96D2-96AC73A55FD7} = {AD88F20A-6A2A-41D5-B1CB-8FE31E70747E}
 		{4A0C7541-E749-46B8-85EE-F062E19EBDDC} = {9588DD02-DF49-4E62-8415-97324F2945A8}
 		{AD88F20A-6A2A-41D5-B1CB-8FE31E70747E} = {9588DD02-DF49-4E62-8415-97324F2945A8}
+		{E3DCDD9A-90D1-44A8-AADC-C84322056849} = {4A0C7541-E749-46B8-85EE-F062E19EBDDC}
+		{9CC78889-E599-4CE2-BD0C-0E4A5426EFD1} = {4A0C7541-E749-46B8-85EE-F062E19EBDDC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D7787AB-B4B8-469D-8B08-77509C5F67E3}

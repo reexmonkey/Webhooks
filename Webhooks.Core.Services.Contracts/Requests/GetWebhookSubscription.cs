@@ -7,7 +7,7 @@ namespace Webhooks.Core.Services.Contracts.Requests
     /// <summary>
     /// Specifies a service request to retrieve a webhook subscription.
     /// </summary>
-    [Api("pecifies a service request to retrieve a webhook subscription.")]
+    [Api("Specifies a service request to retrieve a webhook subscription.")]
     public abstract class GetWebhookSubscriptionBase : IGet, IReturn<WebhookSubscriptionResponse>
     {
         /// <summary>
@@ -26,7 +26,7 @@ namespace Webhooks.Core.Services.Contracts.Requests
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
     [Tag("Sync")]
-    [Route("/sync/webhooks/subscriptions/{Id}/retrieve", "GET")]
+    [Route("/sync/webhooks/subscriptions/{Id}", "GET")]
     public sealed class GetWebhookSubscription : GetWebhookSubscriptionBase
     {
     }
@@ -39,7 +39,7 @@ namespace Webhooks.Core.Services.Contracts.Requests
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
     [Tag("Async")]
-    [Route("/sync/webhooks/subscriptions/{Id}/retrieve", "GET")]
+    [Route("/async/webhooks/subscriptions/{Id}", "GET")]
     public sealed class GetWebhookSubscriptionAsync : GetWebhookSubscriptionBase
     {
     }

@@ -7,32 +7,36 @@ namespace Webhooks.Core.Services.Contracts
 {
     public interface IWebhookSubscriptionService
     {
-        WebhookSubscriptionResponse Post(CreateWebhookSubscription request);
+        WebhookSubscriptionResponse Post(CreateWebhookSubscriptions request);
 
         WebhookSubscriptionResponse Post(UpdateWebhookSubscription request);
 
         WebhookSubscriptionResponse Post(DeleteWebhookSubscription request);
 
-        List<WebhookSubscriptionResponse> Post(BatchDeleteWebhookSubscription request);
+        List<WebhookSubscriptionResponse> Post(BatchDeleteWebhookSubscriptions request);
 
         WebhookSubscriptionResponse Post(RestoreWebhookSubscription request);
 
+        List<WebhookSubscriptionResponse> Post(BatchRestoreWebhookSubscriptions request);
+
         WebhookSubscriptionResponse Get(GetWebhookSubscription request);
 
-        List<WebhookSubscriptionResponse> Post(SearchWebhookSubscription request);
+        List<WebhookSubscriptionResponse> Post(QueryWebhookSubscriptions request);
 
-        Task<WebhookSubscriptionResponse> Post(CreateWebhookSubscriptionAsync request);
+        Task<WebhookSubscriptionResponse> Post(CreateWebhookSubscriptionsAsync request);
 
         Task<WebhookSubscriptionResponse> Post(UpdateWebhookSubscriptionAsync request);
 
         Task<WebhookSubscriptionResponse> Post(DeleteWebhookSubscriptionAsync request);
 
-        Task<List<WebhookSubscriptionResponse>> Post(BatchDeleteWebhookSubscriptionAsync request);
+        Task<List<WebhookSubscriptionResponse>> Post(BatchDeleteWebhookSubscriptionsAsync request);
 
         Task<WebhookSubscriptionResponse> Post(RestoreWebhookSubscriptionAsync request);
 
+        Task<List<WebhookSubscriptionResponse>> Post(BatchRestoreWebhookSubscriptionsAsync request);
+
         Task<WebhookSubscriptionResponse> Get(GetWebhookSubscriptionAsync request);
 
-        Task<List<WebhookSubscriptionResponse>> Post(SearchWebhookSubscriptionAsync request);
+        Task<List<WebhookSubscriptionResponse>> Post(QueryWebhookSubscriptionsAsync request);
     }
 }

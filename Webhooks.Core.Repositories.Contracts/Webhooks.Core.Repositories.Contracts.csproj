@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="xmisc.backbone.repositories.contracts" Version="6.1.1" />
+    <PackageReference Include="xmisc.backbone.repositories.contracts" Version="8.1.4" />
   </ItemGroup>
 
   <ItemGroup>

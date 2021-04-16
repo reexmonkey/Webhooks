@@ -8,8 +8,8 @@ namespace Webhooks.Core.Services.Contracts.Requests
     /// <summary>
     /// Specifies a service request to delete a batch of webhook subscriptions.
     /// </summary>
-    [Api("pecifies a service request to delete a batch of webhook subscriptions.")]
-    public abstract class BatchDeleteWebhookSubscriptionBase : IPost, IReturn<List<WebhookSubscriptionResponse>>
+    [Api("Specifies a service request to delete a batch of webhook subscriptions.")]
+    public abstract class BatchDeleteWebhookSubscriptionsBase : IDelete, IReturn<List<WebhookSubscriptionResponse>>
     {
         /// <summary>
         /// The name of the webhook definitions associated with the subscription.
@@ -33,8 +33,8 @@ namespace Webhooks.Core.Services.Contracts.Requests
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
     [Tag("Sync")]
-    [Route("/sync/webhooks/subscriptions/delete", "POST")]
-    public sealed class BatchDeleteWebhookSubscription : BatchDeleteWebhookSubscriptionBase
+    [Route("/sync/webhooks/subscriptions", "DELETE")]
+    public sealed class BatchDeleteWebhookSubscriptions : BatchDeleteWebhookSubscriptionsBase
     {
     }
 
@@ -47,8 +47,8 @@ namespace Webhooks.Core.Services.Contracts.Requests
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
     [Tag("Async")]
-    [Route("/sync/webhooks/subscriptions/delete", "POST")]
-    public sealed class BatchDeleteWebhookSubscriptionAsync : BatchDeleteWebhookSubscriptionBase
+    [Route("/async/webhooks/subscriptions", "DELETE")]
+    public sealed class BatchDeleteWebhookSubscriptionsAsync : BatchDeleteWebhookSubscriptionsBase
     {
     }
 }

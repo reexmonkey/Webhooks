@@ -1,7 +1,6 @@
 ﻿using ServiceStack;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Webhooks.Core.Services.Contracts.Responses;
 
 namespace Webhooks.Core.Services.Contracts.Requests
@@ -9,8 +8,8 @@ namespace Webhooks.Core.Services.Contracts.Requests
     /// <summary>
     /// Specifies a service request to update a webhook subscription.
     /// </summary>
-    [Api("pecifies a service request to update a webhook subscription.")]
-    public abstract class UpdateWebhookSubscriptionBase: IPost, IReturn<WebhookSubscriptionResponse>
+    [Api("Specifies a service request to update a webhook subscription.")]
+    public abstract class UpdateWebhookSubscriptionBase : IPost, IReturn<WebhookSubscriptionResponse>
     {
         /// <summary>
         /// The unique identifier of the webhook subscription.
@@ -19,10 +18,10 @@ namespace Webhooks.Core.Services.Contracts.Requests
         public Guid Id { get; set; }
 
         /// <summary>
-        /// The unique identifier of the webhook subscriber.
+        /// The unique identifier of the webhook subscription.
         /// </summary>
-        [ApiMember(Description = "The unique identifier of the webhook subscriber.", IsRequired = false)]
-        public string SubscriberId { get; set; }
+        [ApiMember(Description = "The unique identifier of the webhook subscription.", IsRequired = false)]
+        public string SubscriptionId { get; set; }
 
         /// <summary>
         /// The display name of the webhook subscription.
@@ -79,7 +78,7 @@ namespace Webhooks.Core.Services.Contracts.Requests
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
     [Tag("Sync")]
-    [Route("/sync/webhooks/subscriptions/{Id}/update", "POST")]
+    [Route("/sync/webhooks/subscriptions/{Id}", "PUT")]
     public sealed class UpdateWebhookSubscription : UpdateWebhookSubscriptionBase
     {
     }
@@ -92,7 +91,7 @@ namespace Webhooks.Core.Services.Contracts.Requests
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
     [Tag("Async")]
-    [Route("/sync/webhooks/subscriptions/{Id}/update", "POST")]
+    [Route("/async/webhooks/subscriptions/{Id}", "PUT")]
     public sealed class UpdateWebhookSubscriptionAsync : UpdateWebhookSubscriptionBase
     {
     }

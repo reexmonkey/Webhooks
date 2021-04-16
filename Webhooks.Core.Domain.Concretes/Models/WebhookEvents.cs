@@ -1,43 +1,40 @@
-﻿using System;
+﻿using ServiceStack;
+using ServiceStack.DataAnnotations;
+using System;
 
 namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
 {
     /// <summary>
-    /// Specifies a webhook event to store webhook information
+    /// Represents a webhook event with a payload.
     /// </summary>
-    public abstract class WebhookEventBase
+    [Api("Represents a webhook event with a payload")]
+    public class WebhookEvent
     {
         /// <summary>
         /// The unique identifier of the webhook event.
         /// </summary>
+        [ApiMember(Description = "The unique identifier of the webhook event.", IsRequired = false)]
+        [AutoId]
         public Guid Id { get; set; }
 
         /// <summary>
-        /// The unique name of the webhook associated to this event.
+        /// The unique name of the webhook event.
+        /// <para/> Examples: response.available
         /// </summary>
-        public string WebhookId { get; set; }
+        [ApiMember(Description = "The unique name of the webhook event." +
+            " Examples: response.available", IsRequired = true)]
+        public string Name { get; set; }
 
         /// <summary>
-        /// The creation time of the webhook event.
+        /// The payload of the webhook event.
         /// </summary>
+        [ApiMember(Description = "The payload of the webhook event.", IsRequired = true)]
+        public object Data { get; set; }
+
+        /// <summary>
+        /// The time at which the webhook event was created.
+        /// </summary>
+        [ApiMember(Description = "The time at which the webhook event was created.", IsRequired = false)]
         public DateTime CreationTimeUtc { get; set; }
     }
-
-
-    /// <summary>
-    /// Specifies a webhook event to store webhook information of type <typeparamref name="TData"/>.
-    /// </summary>
-    /// <typeparam name="TData">The type of information to store in the webhook event.</typeparam>
-    public abstract class WebhookEvent<TData> : WebhookEventBase
-        where TData : class
-    {
-        /// <summary>
-        /// The information that the webhook event stores.
-        /// </summary>
-        public TData Data { get; set; }
-    }
-
-    public sealed class TextualWebEvent : WebhookEvent<string> { }
-
-    public sealed class BinaryWebEvent : WebhookEvent<byte[]> { }
 }

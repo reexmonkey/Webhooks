@@ -15,12 +15,6 @@ namespace Webhooks.Core.Services.Contracts.Requests
         /// </summary>
         [ApiMember(Description = "The unique identifier of the webhook subscription.", IsRequired = true)]
         public Guid Id { get; set; }
-
-        /// <summary>
-        /// The secret to sign, verify, encrypt or decrypt the payload of a webhook, or authorize modification of a webhook subscription.
-        /// </summary>
-        [ApiMember(Description = "The secret to sign, verify, encrypt or decrypt the payload of a webhook, or authorize modification of a webhook subscription.", IsRequired = true)]
-        public string Secret { get; set; }
     }
 
     /// <summary>
@@ -31,7 +25,7 @@ namespace Webhooks.Core.Services.Contracts.Requests
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
     [Tag("Sync")]
-    [Route("/sync/webhooks/subscriptions/{Id}/restore", "POST")]
+    [Route("/sync/webhooks/undeletions/subscriptions/{Id}", "POST")]
     public sealed class RestoreWebhookSubscription : RestoreWebhookSubscriptionBase
     {
     }
@@ -44,7 +38,7 @@ namespace Webhooks.Core.Services.Contracts.Requests
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
     [Tag("Async")]
-    [Route("/sync/webhooks/subscriptions/{Id}/restore", "POST")]
+    [Route("/async/webhooks/undeletions/subscriptions/{Id}/undeletions", "POST")]
     public sealed class RestoreWebhookSubscriptionAsync : RestoreWebhookSubscriptionBase
     {
     }

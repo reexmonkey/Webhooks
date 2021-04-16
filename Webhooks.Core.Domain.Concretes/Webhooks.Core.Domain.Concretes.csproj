@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\WebhookPayload.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ServiceStack.Api.OpenApi" Version="5.10.4" />
   </ItemGroup>
 

@@ -1,36 +1,36 @@
 ﻿using ServiceStack;
-using ServiceStack.DataAnnotations;
-using ServiceStack.Model;
 using System;
 using System.Collections.Generic;
+using Webhooks.Core.Services.Contracts.Responses;
 
-namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
+namespace Webhooks.Core.Services.Contracts.Requests
 {
     /// <summary>
-    /// Represents a webhook subscription
+    /// Specifies a service request to query for webhook subscriptions.
     /// </summary>
-    [Api(" Represents a webhook subscription")]
-    public class WebhookSubscription : IHasId<Guid>
+    [Api("Specifies a service request to query for webhook subscriptions.")]
+    public abstract class QueryWebhookSubscriptionsBase : IGet, IReturn<List<WebhookSubscriptionResponse>>
     {
         /// <summary>
         /// The unique identifier of the webhook subscription.
         /// </summary>
         [ApiMember(Description = "The unique identifier of the webhook subscription.", IsRequired = false)]
-        [AutoId]
         public Guid Id { get; set; }
 
-        /// <summary>
-        /// The unique name of the webhook subscription.
-        /// </summary>
         [ApiMember(Description = "The unique name of the webhook subscription.", IsRequired = true)]
         public string Name { get; set; }
-        
+
         /// <summary>
-        /// The subscribed webhook.
+        /// The display name of the webhook subscription.
         /// </summary>
-        [ApiMember(Description = "The subscribed webhook.", IsRequired = true)]        
-        [Reference]
-        public WebhookDefinition Webhook { get; set; }
+        [ApiMember(Description = "The description of the webhook subscription.", IsRequired = false)]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// The name of the webhook events associated with the subscription.
+        /// </summary>
+        [ApiMember(Description = "The name of the webhook events associated with the subscription.", IsRequired = false)]
+        public List<string> WebhookNames { get; set; }
 
         /// <summary>
         /// The endpoint URI of the webhook subscription.
@@ -38,11 +38,6 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
         [ApiMember(Description = "The endpoint URI of the webhook subscription.", IsRequired = true)]
         public Uri EndpointUri { get; set; }
 
-        /// <summary>
-        /// The secret to sign, verify, encrypt or decrypt the payload of a webhook.
-        /// </summary>
-        [ApiMember(Description = "The secret to sign, verify, encrypt or decrypt the payload of a webhook.", IsRequired = true)]
-        public string Secret { get; set; }
 
         /// <summary>
         /// The time (in UTC) at which the webhook subscription was created.
@@ -57,12 +52,6 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
         public DateTime LastModificationTimeUtc { get; set; }
 
         /// <summary>
-        /// Additional headers to send with the webhook.
-        /// </summary>
-        [ApiMember(Description = "Additional headers to send with the webhook.", IsRequired = false)]
-        public Dictionary<string, string> Headers { get; set; }
-
-        /// <summary>
         /// Specifies whether the webhook subscription is active or not.
         /// <para/> True if the subscription is active; otherwise false.
         /// </summary>
@@ -70,12 +59,31 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
             " True if the subscription is active; otherwise false.", IsRequired = false)]
         public bool IsActive { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebhookSubscription"/> class.
-        /// </summary>
-        public WebhookSubscription()
-        {
-            Headers = new Dictionary<string, string>();
-        }
+    }
+
+    /// <summary>
+    /// Represents a service request to query for webhook subscriptions in a synchronous operation.
+    /// </summary>
+    [Api("Represents a service request to query for webhook subscriptions in a synchronous operation.")]
+    [Tag("Query")]
+    [Tag("Webhooks")]
+    [Tag("Subscriptions")]
+    [Tag("Sync")]
+    [Route("/sync/webhooks/subscriptions", "GET")]
+    public sealed class QueryWebhookSubscriptions : QueryWebhookSubscriptionsBase
+    {
+    }
+
+    /// <summary>
+    /// Represents a service request to query for webhook subscriptions in an asynchronous operation.
+    /// </summary>
+    [Api("Represents a service request to query for webhook subscriptions in an asynchronous operation.")]
+    [Tag("Query")]
+    [Tag("Webhooks")]
+    [Tag("Subscriptions")]
+    [Tag("Async")]
+    [Route("/async/webhooks/subscriptions", "GET")]
+    public sealed class QueryWebhookSubscriptionsAsync : QueryWebhookSubscriptionsBase
+    {
     }
 }
