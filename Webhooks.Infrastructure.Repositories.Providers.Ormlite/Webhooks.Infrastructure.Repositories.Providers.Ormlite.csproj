@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Reexmonkey.Webhooks.Core.Repositories.Ormlite</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ServiceStack.OrmLite" Version="5.11.0" />
+    <PackageReference Include="xmisc.core.linq" Version="6.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Webhooks.Core.Repositories.Providers\Webhooks.Core.Repositories.Providers.csproj" />
+  </ItemGroup>
+
+</Project>

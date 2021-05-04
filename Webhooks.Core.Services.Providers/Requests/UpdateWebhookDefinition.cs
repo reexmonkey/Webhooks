@@ -1,30 +1,27 @@
 ﻿using ServiceStack;
-using ServiceStack.DataAnnotations;
-using ServiceStack.Model;
 using System;
 using System.Collections.Generic;
+using Webhooks.Core.Services.Contracts.Responses;
 
-namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
+namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
 {
     /// <summary>
-    /// Represents a webhook.
+    /// Specifies a service request to update a webhook definition.
     /// </summary>
-    [Api("Represents a webhook.")]
-    public class WebhookDefinition : IHasId<Guid>
+    [Api("Specifies a service request to update a webhook definition.")]
+    public abstract class UpdateWebhookDefinitionBase : IPut, IReturn<WebhookDefinitionResponse>
     {
         /// <summary>
         /// The unique identifier of the webhook definition.
         /// </summary>
-        [ApiMember(Description = "The unique identifier of the webhook definition.", IsRequired = false)]
-        [AutoId]
+        [ApiMember(Description = "The unique identifier of the webhook definition.", IsRequired = true)]
         public Guid Id { get; set; }
 
         /// <summary>
-        /// The unique identifier of the webhook definition provider.
+        /// The unique identifier of the provider, who created the webhook definition.
         /// </summary>
-        [ApiMember(Description = "The unique identifier of the webhook definition provider.", IsRequired = false)]
-        [References(typeof(WebhookProvider))]
-        public Guid WebhookProviderId { get; set; }
+        [ApiMember(Description = "The unique identifier of the provider, who created the webhook definition.", IsRequired = true)]
+        public Guid ProviderId { get; set; }
 
         /// <summary>
         /// The unique name of the webhook definition.
@@ -54,6 +51,12 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
         public List<string> Tags { get; set; }
 
         /// <summary>
+        /// The password to authenticate the provider and providerize the publish operation.
+        /// </summary>
+        [ApiMember(Description = "The password to authenticate the provider and providerize the publish operation.", IsRequired = true)]
+        public string Password { get; set; }
+
+        /// <summary>
         /// Specifies whether the webhook definition has been published or not.
         /// <para/>
         /// True if the definition was published; otherwise false.
@@ -70,13 +73,31 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
         [ApiMember(Description = "Whether the webhook definition has been temporarily deleted (soft-delete)." +
             " true if the definition has been temporarily deleted; otherwise false.", IsRequired = false)]
         public bool IsDeleted { get; set; }
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebhookDefinition"/> class.
-        /// </summary>
-        public WebhookDefinition()
-        {
-            Tags = new List<string>();
-        }
+    /// <summary>
+    /// Represents a service request to to update a webhook definition in a synchronous operation.
+    /// </summary>
+    [Api("Represents a service request to to update a webhook definition in a synchronous operation.")]
+    [Tag("Update")]
+    [Tag("Webhooks")]
+    [Tag("Definitions")]
+    [Tag("Sync")]
+    [Route("/sync/webhooks/definitions/{Id}", "PUT")]
+    public sealed class UpdateWebhookDefinition : UpdateWebhookDefinitionBase
+    {
+    }
+
+    /// <summary>
+    /// Represents a service request to to update a webhook definition in an asynchronous operation.
+    /// </summary>
+    [Api("Represents a service request to to update a webhook definition in an asynchronous operation.")]
+    [Tag("Update")]
+    [Tag("Webhooks")]
+    [Tag("Definitions")]
+    [Tag("Async")]
+    [Route("/async/webhooks/definitions/{Id}", "PUT")]
+    public sealed class UpdateWebhookDefinitionAsync : UpdateWebhookDefinitionBase
+    {
     }
 }

@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Reexmonkey.Webhooks.Infrastructure.Services.Concretes</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Webhooks.Core.Services.Providers\Webhooks.Core.Services.Providers.csproj" />
+  </ItemGroup>
+
+</Project>

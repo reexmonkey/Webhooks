@@ -24,19 +24,19 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
         /// </summary>
         [ApiMember(Description = "The unique name of the webhook subscription.", IsRequired = true)]
         public string Name { get; set; }
-        
+
         /// <summary>
         /// The subscribed webhook.
         /// </summary>
-        [ApiMember(Description = "The subscribed webhook.", IsRequired = true)]        
+        [ApiMember(Description = "The names of subscribed webhooks.", IsRequired = true)]
         [Reference]
-        public WebhookDefinition Webhook { get; set; }
+        public List<string> Webhooks { get; set; }
 
         /// <summary>
         /// The endpoint URI of the webhook subscription.
         /// </summary>
         [ApiMember(Description = "The endpoint URI of the webhook subscription.", IsRequired = true)]
-        public Uri EndpointUri { get; set; }
+        public Uri EndPointUri { get; set; }
 
         /// <summary>
         /// The secret to sign, verify, encrypt or decrypt the payload of a webhook.
@@ -64,7 +64,8 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
 
         /// <summary>
         /// Specifies whether the webhook subscription is active or not.
-        /// <para/> True if the subscription is active; otherwise false.
+        /// <para/>
+        /// True if the subscription is active; otherwise false.
         /// </summary>
         [ApiMember(Description = "Specifies whether the webhook subscription is active or not." +
             " True if the subscription is active; otherwise false.", IsRequired = false)]
@@ -76,6 +77,7 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
         public WebhookSubscription()
         {
             Headers = new Dictionary<string, string>();
+            Webhooks = new List<string>();
         }
     }
 }
