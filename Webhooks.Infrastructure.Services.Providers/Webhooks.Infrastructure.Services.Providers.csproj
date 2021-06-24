@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Webhooks.Core.Services.Providers\Webhooks.Core.Services.Providers.csproj" />
+    <ProjectReference Include="..\Webhooks.Core.Services.Providers\Webhooks.Core.Services.Publishers.csproj" />
   </ItemGroup>
 
 </Project>

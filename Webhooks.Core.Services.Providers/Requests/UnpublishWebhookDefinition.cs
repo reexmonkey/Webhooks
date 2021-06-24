@@ -1,21 +1,21 @@
 ﻿using Reexmonkey.Webhooks.Core.Domain.Concretes.Models;
+using Reexmonkey.Webhooks.Core.Services.Publishers.Responses;
 using ServiceStack;
 using System;
-using Webhooks.Core.Services.Contracts.Responses;
 
-namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
+namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
 {
     /// <summary>
     /// Specifies a service request to publish a webhook definition.
     /// </summary>
     [Api("Specifies a service request to publish a webhook definition.")]
-    public class PublishWebhookDefinitionsBase : IPost, IReturn<WebhookDefinitionResponse>
+    public class UnpublishWebhookDefinitionsBase : IDelete, IReturn<WebhookDefinitionResponse>
     {
         /// <summary>
-        /// The unique identifier of the provider, who created the webhook definition.
+        /// The unique identifier of the publisher, who created the webhook definition.
         /// </summary>
-        [ApiMember(Description = "The unique identifier of the provider, who created the webhook definition.", IsRequired = true)]
-        public Guid ProviderId { get; set; }
+        [ApiMember(Description = "The unique identifier of the publisher, who created the webhook definition.", IsRequired = true)]
+        public Guid PublisherId { get; set; }
 
         /// <summary>
         /// The webhook to publish
@@ -24,9 +24,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
         public WebhookDefinition Webhook { get; set; }
 
         /// <summary>
-        /// The password to providerize the publish operation.
+        /// The password to publisherize the publish operation.
         /// </summary>
-        [ApiMember(Description = "The password to providerize the publish operation.", IsRequired = true)]
+        [ApiMember(Description = "The password to publisherize the publish operation.", IsRequired = true)]
         public string Password { get; set; }
     }
 
@@ -34,12 +34,11 @@ namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
     /// Represents a service request to publish a webhook definition in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to publish a webhook definition in a synchronous operation.")]
-    [Tag("Publish")]
+    [Tag("Unpublish")]
     [Tag("Webhook")]
     [Tag("Definition")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/providers/{ProviderId}/publications", "POST")]
-    public sealed class PublishWebhook : PublishWebhookDefinitionsBase
+    [Route("/webhooks/publishers/{PublisherId}/definitions", "DELETE")]
+    public sealed class UnpublishWebhookDefinition : UnpublishWebhookDefinitionsBase
     {
     }
 
@@ -47,12 +46,12 @@ namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
     /// Represents a service request to publish a webhook definition in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to publish a webhook definition in an asynchronous operation.")]
-    [Tag("Publish")]
+    [Tag("Unpublish")]
     [Tag("Webhook")]
     [Tag("Definition")]
     [Tag("Async")]
-    [Route("/async/webhooks/providers/{ProviderId}/publications", "POST")]
-    public sealed class PublishWebhookDefinitionAsync : PublishWebhookDefinitionsBase
+    [Route("/async/webhooks/publishers/{PublisherId}/definitions", "DELETE")]
+    public sealed class UnpublishWebhookDefinitionAsync : UnpublishWebhookDefinitionsBase
     {
     }
 }

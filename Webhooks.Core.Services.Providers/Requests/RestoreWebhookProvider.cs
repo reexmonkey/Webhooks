@@ -1,45 +1,44 @@
-﻿using ServiceStack;
+﻿using Reexmonkey.Webhooks.Core.Services.Publishers.Responses;
+using ServiceStack;
 using System;
-using Webhooks.Core.Services.Contracts.Responses;
 
-namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
+namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
 {
     /// <summary>
-    /// Specifies a service request to restore a soft-deleted webhook provider.
+    /// Specifies a service request to restore a soft-deleted webhook publisher.
     /// </summary>
-    [Api("Specifies a service request to restore a soft-deleted webhook provider.")]
-    public abstract class RestoreWebhookProviderBase : IPost, IReturn<WebhookProviderResponse>
+    [Api("Specifies a service request to restore a soft-deleted webhook publisher.")]
+    public abstract class RestoreWebhookPublisherBase : IPost, IReturn<WebhookPublisherResponse>
     {
         /// <summary>
-        /// The unique identifier of the webhook provider.
+        /// The unique identifier of the webhook publisher.
         /// </summary>
-        [ApiMember(Description = "The unique identifier of the webhook provider.", IsRequired = true)]
+        [ApiMember(Description = "The unique identifier of the webhook publisher.", IsRequired = true)]
         public Guid Id { get; set; }
     }
 
     /// <summary>
-    /// Represents a service request to restore a soft-deleted webhook provider in a synchronous operation.
+    /// Represents a service request to restore a soft-deleted webhook publisher in a synchronous operation.
     /// </summary>
-    [Api("Represents a service request to restore the soft-deleted profile of a webhook provider.")]
+    [Api("Represents a service request to restore the soft-deleted profile of a webhook publisher.")]
     [Tag("Restore")]
     [Tag("Webhooks")]
-    [Tag("Providers")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/undeletions/providers/{Id}", "POST")]
-    public sealed class RestoreWebhookProvider : RestoreWebhookProviderBase
+    [Tag("Publishers")]
+    [Route("/webhooks/undeletions/publishers/{Id}", "POST")]
+    public sealed class RestoreWebhookPublisher : RestoreWebhookPublisherBase
     {
     }
 
     /// <summary>
-    /// Represents a service request to restore a soft-deleted webhook provider in an asynchronous operation.
+    /// Represents a service request to restore a soft-deleted webhook publisher in an asynchronous operation.
     /// </summary>
-    [Api("Represents a service request to restore a soft-deleted webhook provider in an asynchronous operation.")]
+    [Api("Represents a service request to restore a soft-deleted webhook publisher in an asynchronous operation.")]
     [Tag("Restore")]
     [Tag("Webhooks")]
-    [Tag("Providers")]
+    [Tag("Publishers")]
     [Tag("Async")]
-    [Route("/async/webhooks/undeletions/providers/{Id}", "POST")]
-    public sealed class RestoreWebhookProviderAsync : RestoreWebhookProviderBase
+    [Route("/async/webhooks/undeletions/publishers/{Id}", "POST")]
+    public sealed class RestoreWebhookPublisherAsync : RestoreWebhookPublisherBase
     {
     }
 }

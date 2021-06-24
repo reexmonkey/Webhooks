@@ -1,8 +1,8 @@
-﻿using ServiceStack;
+﻿using Reexmonkey.Webhooks.Core.Services.Publishers.Responses;
+using ServiceStack;
 using System;
-using Webhooks.Core.Services.Contracts.Responses;
 
-namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
+namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
 {
     /// <summary>
     /// Specifies a service request to retrieve a webhook definition.

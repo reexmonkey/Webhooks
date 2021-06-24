@@ -18,7 +18,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
         private readonly IWebhookDefinitionRepository webhookDefinitionRepository;
         private readonly IMongoDatabase database;
         private readonly MongoCollectionSettings settings;
-        private readonly IMongoCollection<WebhookProvider> collection;
+        private readonly IMongoCollection<WebhookPublisher> collection;
 
         public WebhookProviderRepository(
             IWebhookDefinitionRepository webhookDefinitionRepository,
@@ -28,7 +28,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             this.webhookDefinitionRepository = webhookDefinitionRepository ?? throw new ArgumentNullException(nameof(webhookDefinitionRepository));
             this.database = database ?? throw new ArgumentNullException(nameof(database));
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            collection = database.GetCollection<WebhookProvider>(nameof(WebhookProvider), settings);
+            collection = database.GetCollection<WebhookPublisher>(nameof(WebhookPublisher), settings);
         }
 
         public bool ContainsKey(Guid key)
@@ -46,14 +46,14 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
 
         public bool ContainsKeys(IEnumerable<Guid> keys, bool strict = true)
         {
-            var filter = Builders<WebhookProvider>.Filter.In(x => x.Id, keys);
+            var filter = Builders<WebhookPublisher>.Filter.In(x => x.Id, keys);
             var results = collection.Find(filter).ToList();
             return strict ? results.Count == keys.Count() : results.Any();
         }
 
         public async Task<bool> ContainsKeysAsync(IEnumerable<Guid> keys, bool strict = true, CancellationToken token = default)
         {
-            var filter = Builders<WebhookProvider>.Filter.In(x => x.Id, keys);
+            var filter = Builders<WebhookPublisher>.Filter.In(x => x.Id, keys);
             using (var cursor = await collection.FindAsync(filter, cancellationToken: token))
             {
                 var results = await cursor.ToListAsync(token);
@@ -61,17 +61,17 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             }
         }
 
-        public bool Erase(WebhookProvider model)
+        public bool Erase(WebhookPublisher model)
         {
             return EraseByKey(model.Id);
         }
 
-        public long EraseAll(IEnumerable<WebhookProvider> models)
+        public long EraseAll(IEnumerable<WebhookPublisher> models)
         {
             return EraseAllByKeys(models.Select(x => x.Id));
         }
 
-        public Task<long> EraseAllAsync(IEnumerable<WebhookProvider> models, CancellationToken token = default)
+        public Task<long> EraseAllAsync(IEnumerable<WebhookPublisher> models, CancellationToken token = default)
         {
             return EraseAllByKeysAsync(models.Select(x => x.Id), token);
         }
@@ -81,7 +81,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             var deleted = 0L;
             using (var scope = TransactionScopeOption.Required.AsTransactionScope())
             {
-                var filter = Builders<WebhookProvider>.Filter.In(x => x.Id, keys);
+                var filter = Builders<WebhookPublisher>.Filter.In(x => x.Id, keys);
                 var result = collection.DeleteMany(filter);
                 deleted = result.IsAcknowledged ? result.DeletedCount : 0L;
                 scope.Complete();
@@ -94,7 +94,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             var deleted = 0L;
             using (var scope = TransactionScopeOption.Required.AsTransactionScopeFlow())
             {
-                var filter = Builders<WebhookProvider>.Filter.In(x => x.Id, keys);
+                var filter = Builders<WebhookPublisher>.Filter.In(x => x.Id, keys);
                 var result = await collection.DeleteManyAsync(filter, token);
                 deleted = result.IsAcknowledged ? (int)result.DeletedCount : 0L;
                 scope.Complete();
@@ -102,7 +102,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             return deleted;
         }
 
-        public Task<bool> EraseAsync(WebhookProvider model, CancellationToken token = default)
+        public Task<bool> EraseAsync(WebhookPublisher model, CancellationToken token = default)
         {
             return EraseByKeyAsync(model.Id, token);
         }
@@ -112,7 +112,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             var deleted = false;
             using (var scope = TransactionScopeOption.Required.AsTransactionScope())
             {
-                var filter = Builders<WebhookProvider>.Filter.Eq(x => x.Id, key);
+                var filter = Builders<WebhookPublisher>.Filter.Eq(x => x.Id, key);
                 var result = collection.DeleteOne(filter);
                 deleted = result.IsAcknowledged && result.DeletedCount > 0;
                 scope.Complete();
@@ -125,7 +125,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             var deleted = false;
             using (var scope = TransactionScopeOption.Required.AsTransactionScopeFlow())
             {
-                var filter = Builders<WebhookProvider>.Filter.Eq(x => x.Id, key);
+                var filter = Builders<WebhookPublisher>.Filter.Eq(x => x.Id, key);
                 var result = await collection.DeleteOneAsync(filter, token);
 
                 deleted = result.IsAcknowledged && result.DeletedCount > 0;
@@ -134,42 +134,42 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             return deleted;
         }
 
-        public List<WebhookProvider> FindAll(Expression<Func<WebhookProvider, bool>> predicate, bool? references = null, int? offset = null, int? count = null)
+        public List<WebhookPublisher> FindAll(Expression<Func<WebhookPublisher, bool>> predicate, bool? references = null, int? offset = null, int? count = null)
         {
             return collection.Find(predicate).Skip(offset).Limit(count).ToList();
         }
 
-        public async Task<List<WebhookProvider>> FindAllAsync(Expression<Func<WebhookProvider, bool>> predicate, bool? references = null, int? offset = null, int? count = null, CancellationToken token = default)
+        public async Task<List<WebhookPublisher>> FindAllAsync(Expression<Func<WebhookPublisher, bool>> predicate, bool? references = null, int? offset = null, int? count = null, CancellationToken token = default)
         {
-            var options = new FindOptions<WebhookProvider>() { Skip = offset, Limit = count };
+            var options = new FindOptions<WebhookPublisher>() { Skip = offset, Limit = count };
             using (var cursor = await collection.FindAsync(predicate, options, token))
             {
                 return await cursor.ToListAsync(token);
             }
         }
 
-        public List<WebhookProvider> FindAllByKeys(IEnumerable<Guid> keys, bool? references = null, int? offset = null, int? count = null)
+        public List<WebhookPublisher> FindAllByKeys(IEnumerable<Guid> keys, bool? references = null, int? offset = null, int? count = null)
         {
-            var filter = Builders<WebhookProvider>.Filter.In(x => x.Id, keys);
+            var filter = Builders<WebhookPublisher>.Filter.In(x => x.Id, keys);
             return collection.Find(filter).Skip(offset).Limit(count).ToList();
         }
 
-        public async Task<List<WebhookProvider>> FindAllByKeysAsync(IEnumerable<Guid> keys, bool? references = null, int? offset = null, int? count = null, CancellationToken token = default)
+        public async Task<List<WebhookPublisher>> FindAllByKeysAsync(IEnumerable<Guid> keys, bool? references = null, int? offset = null, int? count = null, CancellationToken token = default)
         {
-            var filter = Builders<WebhookProvider>.Filter.In(x => x.Id, keys);
-            var options = new FindOptions<WebhookProvider>() { Skip = offset, Limit = count };
+            var filter = Builders<WebhookPublisher>.Filter.In(x => x.Id, keys);
+            var options = new FindOptions<WebhookPublisher>() { Skip = offset, Limit = count };
             using (var cursor = await collection.FindAsync(filter, options, token))
             {
                 return await cursor.ToListAsync(token);
             }
         }
 
-        public WebhookProvider FindByKey(Guid key, bool? references = null)
+        public WebhookPublisher FindByKey(Guid key, bool? references = null)
         {
             return collection.Find(x => x.Id == key).FirstOrDefault();
         }
 
-        public async Task<WebhookProvider> FindByKeyAsync(Guid key, bool? references = null, CancellationToken token = default)
+        public async Task<WebhookPublisher> FindByKeyAsync(Guid key, bool? references = null, CancellationToken token = default)
         {
             using (var cursor = await collection.FindAsync(x => x.Id == key, cancellationToken: token))
             {
@@ -177,15 +177,15 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             }
         }
 
-        public List<WebhookProvider> Get(bool? references = null, int? offset = null, int? count = null)
+        public List<WebhookPublisher> Get(bool? references = null, int? offset = null, int? count = null)
         {
-            return collection.Find(Builders<WebhookProvider>.Filter.Empty).Skip(offset).Limit(count).ToList();
+            return collection.Find(Builders<WebhookPublisher>.Filter.Empty).Skip(offset).Limit(count).ToList();
         }
 
-        public async Task<List<WebhookProvider>> GetAsync(bool? references = null, int? offset = null, int? count = null, CancellationToken token = default)
+        public async Task<List<WebhookPublisher>> GetAsync(bool? references = null, int? offset = null, int? count = null, CancellationToken token = default)
         {
-            var options = new FindOptions<WebhookProvider> { Skip = offset, Limit = count };
-            using (var cursor = await collection.FindAsync(Builders<WebhookProvider>.Filter.Empty, options, token))
+            var options = new FindOptions<WebhookPublisher> { Skip = offset, Limit = count };
+            using (var cursor = await collection.FindAsync(Builders<WebhookPublisher>.Filter.Empty, options, token))
             {
                 return cursor.ToList(token);
             }
@@ -194,8 +194,8 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
         public List<Guid> GetKeys(int? offset = null, int? count = null)
         {
             return collection
-                .Find(Builders<WebhookProvider>.Filter.Empty)
-                .Project(Builders<WebhookProvider>.Projection.Expression(x => x.Id))
+                .Find(Builders<WebhookPublisher>.Filter.Empty)
+                .Project(Builders<WebhookPublisher>.Projection.Expression(x => x.Id))
                 .Skip(offset)
                 .Limit(count)
                 .ToList();
@@ -203,18 +203,18 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
 
         public async Task<List<Guid>> GetKeysAsync(int? offset = null, int? count = null, CancellationToken token = default)
         {
-            var options = new FindOptions<WebhookProvider, Guid>
+            var options = new FindOptions<WebhookPublisher, Guid>
             {
-                Projection = Builders<WebhookProvider>.Projection.Expression(x => x.Id),
+                Projection = Builders<WebhookPublisher>.Projection.Expression(x => x.Id),
                 Skip = offset,
                 Limit = count
             };
 
-            using (var cursor = await collection.FindAsync(Builders<WebhookProvider>.Filter.Empty, options, token))
+            using (var cursor = await collection.FindAsync(Builders<WebhookPublisher>.Filter.Empty, options, token))
                 return await cursor.ToListAsync();
         }
 
-        public void Restore(WebhookProvider model, bool? references = null)
+        public void Restore(WebhookPublisher model, bool? references = null)
         {
             model.IsDeleted = false;
             if (references.HasValue
@@ -227,7 +227,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             Save(model, references);
         }
 
-        public void RestoreAll(IEnumerable<WebhookProvider> models, bool? references = null)
+        public void RestoreAll(IEnumerable<WebhookPublisher> models, bool? references = null)
         {
             if (references.HasValue && references.Value)
             {
@@ -243,7 +243,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             SaveAll(models, references);
         }
 
-        public async Task RestoreAllAsync(IEnumerable<WebhookProvider> models, bool? references = null, CancellationToken token = default)
+        public async Task RestoreAllAsync(IEnumerable<WebhookPublisher> models, bool? references = null, CancellationToken token = default)
         {
             if (references.HasValue && references.Value)
             {
@@ -259,14 +259,14 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             await SaveAllAsync(models, references, token);
         }
 
-        public List<WebhookProvider> RestoreAllByKeys(IEnumerable<Guid> keys, bool? references = null, int? offset = null, int? count = null)
+        public List<WebhookPublisher> RestoreAllByKeys(IEnumerable<Guid> keys, bool? references = null, int? offset = null, int? count = null)
         {
             var matches = FindAllByKeys(keys, references, offset, count);
             if (matches.Any()) RestoreAll(matches, references);
             return matches;
         }
 
-        public async Task<List<WebhookProvider>> RestoreAllByKeysAsync(
+        public async Task<List<WebhookPublisher>> RestoreAllByKeysAsync(
             IEnumerable<Guid> keys,
             bool? references = null,
             int? offset = null,
@@ -278,7 +278,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             return matches;
         }
 
-        public Task RestoreAsync(WebhookProvider model, bool? references = null)
+        public Task RestoreAsync(WebhookPublisher model, bool? references = null)
         {
             model.IsDeleted = false;
             if (references.HasValue
@@ -291,21 +291,21 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             return SaveAsync(model, references);
         }
 
-        public WebhookProvider RestoreByKey(Guid key, bool? references = null)
+        public WebhookPublisher RestoreByKey(Guid key, bool? references = null)
         {
             var match = FindByKey(key, references);
             if (match != null) Restore(match, references);
             return match;
         }
 
-        public async Task<WebhookProvider> RestoreByKeyAsync(Guid key, bool? references = null)
+        public async Task<WebhookPublisher> RestoreByKeyAsync(Guid key, bool? references = null)
         {
             var match = await FindByKeyAsync(key, references);
             if (match != null) await RestoreAsync(match, references);
             return match;
         }
 
-        public bool Save(WebhookProvider model, bool? references = true)
+        public bool Save(WebhookPublisher model, bool? references = true)
         {
             var persisted = false;
             using (var scope = TransactionScopeOption.Required.AsTransactionScope())
@@ -323,13 +323,13 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             return persisted;
         }
 
-        public long SaveAll(IEnumerable<WebhookProvider> models, bool? references = true)
+        public long SaveAll(IEnumerable<WebhookPublisher> models, bool? references = true)
         {
             var saves = 0L;
             using (var scope = TransactionScopeOption.Required.AsTransactionScope())
             {
                 var keys = new List<Guid>();
-                var candidates = new List<WebhookProvider>();
+                var candidates = new List<WebhookPublisher>();
                 foreach (var model in models)
                 {
                     var candidate = model;
@@ -346,11 +346,11 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
                 var similar = candidates.Intersect(matches);
                 var different = matches.Any() ? candidates.Except(matches) : candidates;
 
-                var requests = new List<WriteModel<WebhookProvider>>();
+                var requests = new List<WriteModel<WebhookPublisher>>();
                 if (similar.Any())
                 {
                     foreach (var model in similar)
-                        requests.Add(new ReplaceOneModel<WebhookProvider>(Builders<WebhookProvider>.Filter.Where(x => x.Id == model.Id), model));
+                        requests.Add(new ReplaceOneModel<WebhookPublisher>(Builders<WebhookPublisher>.Filter.Where(x => x.Id == model.Id), model));
                     var result = collection.BulkWrite(requests);
                     saves += result.IsAcknowledged ? result.MatchedCount : 0L;
                 }
@@ -359,7 +359,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
                 {
                     requests.Clear();
                     foreach (var model in different)
-                        requests.Add(new InsertOneModel<WebhookProvider>(model));
+                        requests.Add(new InsertOneModel<WebhookPublisher>(model));
                     var results = collection.BulkWrite(requests);
                     saves += results.IsAcknowledged ? results.InsertedCount : 0L;
                 }
@@ -368,13 +368,13 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             return saves;
         }
 
-        public async Task<long> SaveAllAsync(IEnumerable<WebhookProvider> models, bool? references = true, CancellationToken token = default)
+        public async Task<long> SaveAllAsync(IEnumerable<WebhookPublisher> models, bool? references = true, CancellationToken token = default)
         {
             var saves = 0;
             using (var scope = TransactionScopeOption.Required.AsTransactionScopeFlow())
             {
                 var keys = new List<Guid>();
-                var candidates = new List<WebhookProvider>();
+                var candidates = new List<WebhookPublisher>();
                 foreach (var model in models)
                 {
                     var candidate = model;
@@ -392,11 +392,11 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
 
                 if (similar.Any())
                 {
-                    var requests = new List<WriteModel<WebhookProvider>>();
+                    var requests = new List<WriteModel<WebhookPublisher>>();
                     foreach (var model in similar)
                     {
                         token.ThrowIfCancellationRequested();
-                        requests.Add(new ReplaceOneModel<WebhookProvider>(Builders<WebhookProvider>.Filter.Where(x => x.Id == model.Id), model));
+                        requests.Add(new ReplaceOneModel<WebhookPublisher>(Builders<WebhookPublisher>.Filter.Where(x => x.Id == model.Id), model));
                     }
                     var result = await collection.BulkWriteAsync(requests, cancellationToken: token);
                     saves += result.IsAcknowledged ? (int)result.MatchedCount : 0;
@@ -404,11 +404,11 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
 
                 if (different.Any())
                 {
-                    var requests = new List<WriteModel<WebhookProvider>>();
+                    var requests = new List<WriteModel<WebhookPublisher>>();
                     foreach (var model in different)
                     {
                         token.ThrowIfCancellationRequested();
-                        requests.Add(new InsertOneModel<WebhookProvider>(model));
+                        requests.Add(new InsertOneModel<WebhookPublisher>(model));
                     }
                     var result = await collection.BulkWriteAsync(requests, cancellationToken: token);
                     saves += result.IsAcknowledged ? (int)result.InsertedCount : 0;
@@ -418,7 +418,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             return saves;
         }
 
-        public async Task<bool> SaveAsync(WebhookProvider model, bool? references = true, CancellationToken token = default)
+        public async Task<bool> SaveAsync(WebhookPublisher model, bool? references = true, CancellationToken token = default)
         {
             var persisted = false;
             using (var scope = TransactionScopeOption.Required.AsTransactionScopeFlow())
@@ -436,7 +436,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             return persisted;
         }
 
-        public void Trash(WebhookProvider model, bool? references = null)
+        public void Trash(WebhookPublisher model, bool? references = null)
         {
             model.IsDeleted = true;
             if (references.HasValue
@@ -449,7 +449,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             Save(model, references);
         }
 
-        public void TrashAll(IEnumerable<WebhookProvider> models, bool? references = null)
+        public void TrashAll(IEnumerable<WebhookPublisher> models, bool? references = null)
         {
             if (references.HasValue && references.Value)
             {
@@ -465,7 +465,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             SaveAll(models, references);
         }
 
-        public async Task TrashAllAsync(IEnumerable<WebhookProvider> models, bool? references = null, CancellationToken token = default)
+        public async Task TrashAllAsync(IEnumerable<WebhookPublisher> models, bool? references = null, CancellationToken token = default)
         {
             if (references.HasValue && references.Value)
             {
@@ -481,21 +481,21 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             await SaveAllAsync(models, references, token);
         }
 
-        public List<WebhookProvider> TrashAllByKeys(IEnumerable<Guid> keys, bool? references = null, int? offset = null, int? count = null)
+        public List<WebhookPublisher> TrashAllByKeys(IEnumerable<Guid> keys, bool? references = null, int? offset = null, int? count = null)
         {
             var matches = FindAllByKeys(keys, references, offset, count);
             if (matches.Any()) TrashAll(matches, references);
             return matches;
         }
 
-        public async Task<List<WebhookProvider>> TrashAllByKeysAsync(IEnumerable<Guid> keys, bool? references = null, int? offset = null, int? count = null, CancellationToken token = default)
+        public async Task<List<WebhookPublisher>> TrashAllByKeysAsync(IEnumerable<Guid> keys, bool? references = null, int? offset = null, int? count = null, CancellationToken token = default)
         {
             var matches = await FindAllByKeysAsync(keys, references, offset, count, token);
             if (matches.Any()) await TrashAllAsync(matches, references, token);
             return matches;
         }
 
-        public async Task TrashAsync(WebhookProvider model, bool? references = null)
+        public async Task TrashAsync(WebhookPublisher model, bool? references = null)
         {
             model.IsDeleted = true;
             if (references.HasValue
@@ -508,14 +508,14 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             await SaveAsync(model, references);
         }
 
-        public WebhookProvider TrashByKey(Guid key, bool? references = null)
+        public WebhookPublisher TrashByKey(Guid key, bool? references = null)
         {
             var match = FindByKey(key, references);
             if (match != null) Trash(match, references);
             return match;
         }
 
-        public async Task<WebhookProvider> TrashByKeyAsync(Guid key, bool? references = null, CancellationToken token = default)
+        public async Task<WebhookPublisher> TrashByKeyAsync(Guid key, bool? references = null, CancellationToken token = default)
         {
             var match = await FindByKeyAsync(key, references, token);
             if (match != null) await TrashAsync(match, references);

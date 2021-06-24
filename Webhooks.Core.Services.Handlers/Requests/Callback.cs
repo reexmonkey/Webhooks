@@ -1,15 +1,18 @@
 ﻿using Reexmonkey.Webhooks.Core.Domain.Concretes.Models;
 using ServiceStack;
-using Webhooks.Core.Services.Contracts.Responses;
 
-namespace Webhooks.Core.Services.Contracts.Requests
+namespace Reexmonkey.Webhooks.Core.Services.Handlers.Requests
 {
     /// <summary>
     /// Specifies a service request handler that helps a webhook subscription react to a published webhook event.
     /// </summary>
     [Api("Specifies a service request handler that helps a webhook subscription react to a published webhook event.")]
-    public abstract class WebhookEventHandlerBase : WebhookEvent, IPost, IReturnVoid
+    public abstract class CallbackBase : IPost, IReturnVoid
     {
+        /// <summary>
+        /// </summary>
+        public WebhookEvent Event { get; set; }
+
         /// <summary>
         /// The unique identifier of the public endpoint that will receive the webhook event.
         /// </summary>
@@ -22,11 +25,9 @@ namespace Webhooks.Core.Services.Contracts.Requests
     /// </summary>
     [Api("Represents a service request handler that helps a webhook subscription react to a published webhook event.")]
     [Tag("Webhooks")]
-    [Tag("Events")]
-    [Tag("Handlers")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/events/handlers/{EndPointId}")]
-    public sealed class WebhookEventHandler : WebhookEventHandlerBase
+    [Tag("Callbacks")]
+    [Route("/webhooks/events/handlers/{EndPointId}")]
+    public sealed class Callback : CallbackBase
     {
     }
 
@@ -35,11 +36,10 @@ namespace Webhooks.Core.Services.Contracts.Requests
     /// </summary>
     [Api("Represents a service request handler in an asynchronous operation that helps a webhook subscription react to a published webhook event.")]
     [Tag("Webhooks")]
-    [Tag("Events")]
-    [Tag("Handlers")]
+    [Tag("Callbacks")]
     [Tag("Async")]
     [Route("/async/webhooks/events/handlers/{EndPointId}")]
-    public sealed class WebhookEventHandlerAsync : WebhookEventHandlerBase
+    public sealed class CallbackAsync : CallbackBase
     {
     }
 }

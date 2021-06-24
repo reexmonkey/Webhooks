@@ -1,82 +1,81 @@
 ﻿using Reexmonkey.Webhooks.Core.Domain.Concretes.Models;
+using Reexmonkey.Webhooks.Core.Services.Publishers.Responses;
 using ServiceStack;
 using System.Collections.Generic;
-using Webhooks.Core.Services.Contracts.Responses;
 
-namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
+namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
 {
     /// <summary>
-    /// Specifies a service request to create a webhook provider.
+    /// Specifies a service request to create a webhook publisher.
     /// </summary>
-    [Api("Specifies a service request to create a webhook provider.")]
-    public abstract class CreateWebhookProviderBase : IPost, IReturn<WebhookProviderResponse>
+    [Api("Specifies a service request to create a webhook publisher.")]
+    public abstract class CreateWebhookPublisherBase : IPost, IReturn<WebhookPublisherResponse>
     {
         /// <summary>
-        /// The unique name of the webhook provider.
+        /// The unique name of the webhook publisher.
         /// </summary>
-        [ApiMember(Description = "The unique name of the webhook provider.", IsRequired = true)]
+        [ApiMember(Description = "The unique name of the webhook publisher.", IsRequired = true)]
         public string Name { get; set; }
 
         /// <summary>
-        /// The description of the webhook provider.
+        /// The description of the webhook publisher.
         /// </summary>
-        [ApiMember(Description = "The description of the webhook provider.", IsRequired = false)]
+        [ApiMember(Description = "The description of the webhook publisher.", IsRequired = false)]
         public string Description { get; set; }
 
         /// <summary>
-        /// The contact address of the provider.
+        /// The contact address of the publisher.
         /// </summary>
-        [ApiMember(Description = "The contact address of the provider.", IsRequired = false)]
+        [ApiMember(Description = "The contact address of the publisher.", IsRequired = false)]
         public string Address { get; set; }
 
         /// <summary>
-        /// The password to authenticate the provider.
+        /// The password to authenticate the publisher.
         /// </summary>
-        [ApiMember(Description = "The password to authenticate the provider.", IsRequired = true)]
+        [ApiMember(Description = "The password to authenticate the publisher.", IsRequired = true)]
         public string Password { get; set; }
 
         /// <summary>
-        /// The webhook definitions associated with this provider.
+        /// The webhook definitions associated with this publisher.
         /// </summary>
-        [ApiMember(Description = "The webhook definitions associated with this provider.", IsRequired = false)]
+        [ApiMember(Description = "The webhook definitions associated with this publisher.", IsRequired = false)]
         public List<WebhookDefinition> Webhooks { get; set; }
 
         /// <summary>
-        /// The public key to encrypt the secret of the webhook provider.
+        /// The public key to encrypt the secret of the webhook publisher.
         /// <para/>
         /// The public key can either be in the PEM (base64) or the XML (W3C or .NET) format.
         /// <para/>
         /// As owner of the public and private keys, please use the private key and the RSA algorithm with the OAEP-SHA256 padding to decrypt the encrypted secret.
         /// </summary>
-        [ApiMember(Description = "The public key to encrypt the secret of the webhook provider." +
+        [ApiMember(Description = "The public key to encrypt the secret of the webhook publisher." +
             " The public key can either be in the PEM (base64) or the XML (W3C or .NET) format." +
             " As owner of the public and private key, please use the private key and the RSA algorithm with the OAEP-SHA256 padding to decrypt the encrypted secret.", IsRequired = true)]
         public string PublicKey { get; set; }
     }
 
     /// <summary>
-    /// Represents a service request to to create a webhook provider in a synchronous operation.
+    /// Represents a service request to to create a webhook publisher in a synchronous operation.
     /// </summary>
-    [Api("Represents a service request to to create a webhook provider in a synchronous operation.")]
+    [Api("Represents a service request to to create a webhook publisher in a synchronous operation.")]
     [Tag("Create")]
     [Tag("Webhooks")]
-    [Tag("Providers")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/providers", "POST")]
-    public sealed class CreateWebhookProvider : CreateWebhookProviderBase
+    [Tag("Publishers")]
+    [Route("/webhooks/publishers", "POST")]
+    public sealed class CreateWebhookPublisher : CreateWebhookPublisherBase
     {
     }
 
     /// <summary>
-    /// Represents a service request to to create a webhook provider in an asynchronous operation.
+    /// Represents a service request to to create a webhook publisher in an asynchronous operation.
     /// </summary>
-    [Api("Represents a service request to to create a webhook provider in an asynchronous operation.")]
+    [Api("Represents a service request to to create a webhook publisher in an asynchronous operation.")]
     [Tag("Create")]
     [Tag("Webhooks")]
-    [Tag("Providers")]
+    [Tag("Publishers")]
     [Tag("Async")]
-    [Route("/async/webhooks/providers", "POST")]
-    public sealed class CreateWebhookProviderAsync : CreateWebhookProviderBase
+    [Route("/async/webhooks/publishers", "POST")]
+    public sealed class CreateWebhookPublisherAsync : CreateWebhookPublisherBase
     {
     }
 }

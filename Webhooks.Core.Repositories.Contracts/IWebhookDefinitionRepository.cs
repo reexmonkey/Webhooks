@@ -2,7 +2,7 @@
 using Reexmonkey.Webhooks.Core.Domain.Concretes.Models;
 using System;
 
-namespace Reexmonkey.Webhooks.Core.Repositories.Contracts
+namespace Reexmonkey.Webhooks.Core.Repositories
 {
     public interface IWebhookDefinitionRepository :
         IReadRepository<Guid, WebhookDefinition>,

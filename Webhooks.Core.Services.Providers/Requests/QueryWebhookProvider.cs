@@ -1,53 +1,53 @@
-﻿using ServiceStack;
+﻿using Reexmonkey.Webhooks.Core.Services.Publishers.Responses;
+using ServiceStack;
 using System;
 using System.Collections.Generic;
-using Webhooks.Core.Services.Contracts.Responses;
 
-namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
+namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
 {
     /// <summary>
-    /// Specifies a service request to query for webhook providers.
+    /// Specifies a service request to query for webhook publishers.
     /// </summary>
-    [Api("Specifies a service request to query for webhook providers.")]
-    public abstract class QueryWebhookProvidersBase : IGet, IReturn<List<WebhookProviderResponse>>
+    [Api("Specifies a service request to query for webhook publishers.")]
+    public abstract class QueryWebhookPublishersBase : IGet, IReturn<List<WebhookPublisherResponse>>
     {
         /// <summary>
-        /// The unique identifier of the webhook provider.
+        /// The unique identifier of the webhook publisher.
         /// </summary>
-        [ApiMember(Description = "The unique identifier of the webhook provider.", IsRequired = false)]
+        [ApiMember(Description = "The unique identifier of the webhook publisher.", IsRequired = false)]
         public Guid Id { get; set; }
 
-        [ApiMember(Description = "The unique name of the webhook provider.", IsRequired = false)]
+        [ApiMember(Description = "The unique name of the webhook publisher.", IsRequired = false)]
         public string Name { get; set; }
 
         /// <summary>
-        /// The description of the webhook provider.
+        /// The description of the webhook publisher.
         /// </summary>
-        [ApiMember(Description = "The description of the webhook provider.", IsRequired = false)]
+        [ApiMember(Description = "The description of the webhook publisher.", IsRequired = false)]
         public string Description { get; set; }
 
         /// <summary>
-        /// The contact address of the provider.
+        /// The contact address of the publisher.
         /// </summary>
-        [ApiMember(Description = "The contact address of the provider.", IsRequired = false)]
+        [ApiMember(Description = "The contact address of the publisher.", IsRequired = false)]
         public string Address { get; set; }
 
         /// <summary>
-        /// The webhook definitions associated with this provider.
+        /// The webhook definitions associated with this publisher.
         /// </summary>
-        [ApiMember(Description = "The webhook definitions associated with this provider.", IsRequired = false)]
+        [ApiMember(Description = "The webhook definitions associated with this publisher.", IsRequired = false)]
         public List<string> WebhookNames { get; set; }
 
         /// <summary>
-        /// The time (in UTC) when the profile of the webhook provider was created.
+        /// The time (in UTC) when the profile of the webhook publisher was created.
         /// </summary>
-        [ApiMember(Description = "The time (in UTC) when the profile of the webhook provider was created.", IsRequired = false)]
+        [ApiMember(Description = "The time (in UTC) when the profile of the webhook publisher was created.", IsRequired = false)]
         public DateTime CreationTimeUtc { get; set; }
 
         /// <summary>
         /// The time (in UTC) when the profile of the webhook was last modified.
         /// </summary>
-        [ApiMember(Description = "The time (in UTC) when the profile of the webhook provider was last modified.", IsRequired = false)]
+        [ApiMember(Description = "The time (in UTC) when the profile of the webhook publisher was last modified.", IsRequired = false)]
         public DateTime LastModificationTimeUtc { get; set; }
 
         /// <summary>
@@ -61,28 +61,27 @@ namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
     }
 
     /// <summary>
-    /// Represents a service request to query for webhook providers in a synchronous operation.
+    /// Represents a service request to query for webhook publishers in a synchronous operation.
     /// </summary>
-    [Api("Represents a service request to query for webhook providers in a synchronous operation.")]
+    [Api("Represents a service request to query for webhook publishers in a synchronous operation.")]
     [Tag("Query")]
     [Tag("Webhooks")]
-    [Tag("Providers")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/providers", "GET")]
-    public sealed class QueryWebhookProviders : QueryWebhookProvidersBase
+    [Tag("Publishers")]
+    [Route("/webhooks/publishers", "GET")]
+    public sealed class QueryWebhookPublishers : QueryWebhookPublishersBase
     {
     }
 
     /// <summary>
-    /// Represents a service request to query for webhook providers in an asynchronous operation.
+    /// Represents a service request to query for webhook publishers in an asynchronous operation.
     /// </summary>
-    [Api("Represents a service request to query for webhook providers in an asynchronous operation.")]
+    [Api("Represents a service request to query for webhook publishers in an asynchronous operation.")]
     [Tag("Query")]
     [Tag("Webhooks")]
-    [Tag("Providers")]
+    [Tag("Publishers")]
     [Tag("Async")]
-    [Route("/async/webhooks/providers", "GET")]
-    public sealed class QueryWebhookProvidersAsync : QueryWebhookProvidersBase
+    [Route("/async/webhooks/publishers", "GET")]
+    public sealed class QueryWebhookPublishersAsync : QueryWebhookPublishersBase
     {
     }
 }

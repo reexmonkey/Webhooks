@@ -1,57 +1,56 @@
-﻿using ServiceStack;
+﻿using Reexmonkey.Webhooks.Core.Services.Publishers.Responses;
+using ServiceStack;
 using System;
-using Webhooks.Core.Services.Providers.Contracts.Responses;
 
-namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
+namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
 {
     /// <summary>
-    /// Specifies a service request to delete a webhook provider.
+    /// Specifies a service request to delete a webhook publisher.
     /// </summary>
-    [Api("Specifies a service request to delete a webhook provider.")]
-    public abstract class DeleteWebhookProviderBase : IDelete, IReturn<WebhookProviderResponse>
+    [Api("Specifies a service request to delete a webhook publisher.")]
+    public abstract class DeleteWebhookPublisherBase : IDelete, IReturn<WebhookPublisherResponse>
     {
         /// <summary>
-        /// The unique identifier of the webhook provider.
+        /// The unique identifier of the webhook publisher.
         /// </summary>
-        [ApiMember(Description = "The unique identifier of the webhook provider.", IsRequired = true)]
+        [ApiMember(Description = "The unique identifier of the webhook publisher.", IsRequired = true)]
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Specifies whether the webhook provider should be irreversibly erased (hard-delete) or reversibly marked (soft-delete) for deletion.
+        /// Specifies whether the webhook publisher should be irreversibly erased (hard-delete) or reversibly marked (soft-delete) for deletion.
         /// </summary>
-        [ApiMember(Description = "Specifies whether the webhook provider should be irreversibly erased (hard-delete) or reversibly marked (soft-delete) for deletion.", IsRequired = true)]
+        [ApiMember(Description = "Specifies whether the webhook publisher should be irreversibly erased (hard-delete) or reversibly marked (soft-delete) for deletion.", IsRequired = true)]
         public bool Permanently { get; set; }
 
         /// <summary>
-        /// The password to authenticate the webhook provider and providerize the delete operation.
+        /// The password to authenticate the webhook publisher and publisherize the delete operation.
         /// </summary>
-        [ApiMember(Description = "The password to authenticate the webhook provider and providerize the delete operation.", IsRequired = true)]
+        [ApiMember(Description = "The password to authenticate the webhook publisher and publisherize the delete operation.", IsRequired = true)]
         public string Password { get; set; }
     }
 
     /// <summary>
-    /// Represents a service request to delete a webhook provider in a synchronous operation.
+    /// Represents a service request to delete a webhook publisher in a synchronous operation.
     /// </summary>
-    [Api("Represents a service request to delete a webhook provider in a synchronous operation.")]
+    [Api("Represents a service request to delete a webhook publisher in a synchronous operation.")]
     [Tag("Delete")]
     [Tag("Webhooks")]
-    [Tag("Providers")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/providers/{Id}", "DELETE")]
-    public sealed class DeleteWebhookProvider : DeleteWebhookProviderBase
+    [Tag("Publishers")]
+    [Route("/webhooks/publishers/{Id}", "DELETE")]
+    public sealed class DeleteWebhookPublisher : DeleteWebhookPublisherBase
     {
     }
 
     /// <summary>
-    /// Represents a service request to delete a webhook provider in an asynchronous operation.
+    /// Represents a service request to delete a webhook publisher in an asynchronous operation.
     /// </summary>
-    [Api("Represents a service request to delete a webhook provider in an asynchronous operation.")]
+    [Api("Represents a service request to delete a webhook publisher in an asynchronous operation.")]
     [Tag("Delete")]
     [Tag("Webhooks")]
-    [Tag("Providers")]
+    [Tag("Publishers")]
     [Tag("Async")]
-    [Route("/async/webhooks/providers/{Id}", "DELETE")]
-    public sealed class DeleteWebhookProviderAsync : DeleteWebhookProviderBase
+    [Route("/async/webhooks/publishers/{Id}", "DELETE")]
+    public sealed class DeleteWebhookPublisherAsync : DeleteWebhookPublisherBase
     {
     }
 }

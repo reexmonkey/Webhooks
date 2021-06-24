@@ -1,9 +1,9 @@
-﻿using ServiceStack;
+﻿using Reexmonkey.Webhooks.Core.Services.Publishers.Responses;
+using ServiceStack;
 using System;
 using System.Collections.Generic;
-using Webhooks.Core.Services.Contracts.Responses;
 
-namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
+namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
 {
     /// <summary>
     /// Specifies a service request to query for webhook definitions.
@@ -18,10 +18,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
         public Guid Id { get; set; }
 
         /// <summary>
-        /// The name of the provider of the webhook definition.
+        /// The name of the publisher of the webhook definition.
         /// </summary>
-        [ApiMember(Description = "The name of the provider of the webhook definition.", IsRequired = false)]
-        public string ProviderName { get; set; }
+        [ApiMember(Description = "The name of the publisher of the webhook definition.", IsRequired = false)]
+        public string PublisherName { get; set; }
 
         /// <summary>
         /// The unique name of the webhook definition.
@@ -58,8 +58,7 @@ namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
     [Tag("Query")]
     [Tag("Webhooks")]
     [Tag("Definitions")]
-    [Tag("Sync")]
-    [Route("/sync/webhook definitions", "GET")]
+    [Route("/webhooks/definitions", "GET")]
     public sealed class QueryWebhookDefinitions : QueryWebhookDefinitionsBase
     {
     }
@@ -72,7 +71,7 @@ namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
     [Tag("Webhooks")]
     [Tag("Definitions")]
     [Tag("Async")]
-    [Route("/async/webhook definitions", "GET")]
+    [Route("/async/webhooks/definitions", "GET")]
     public sealed class QueryWebhookDefinitionsAsync : QueryWebhookDefinitionsBase
     {
     }

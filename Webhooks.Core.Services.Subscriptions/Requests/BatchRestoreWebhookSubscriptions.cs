@@ -3,7 +3,7 @@ using ServiceStack;
 using System.Collections.Generic;
 using Webhooks.Core.Services.Contracts.Responses;
 
-namespace Webhooks.Core.Services.Contracts.Requests
+namespace Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests
 {
     /// <summary>
     /// Specifies a service request to restore soft-deleted webhook subscriptions.

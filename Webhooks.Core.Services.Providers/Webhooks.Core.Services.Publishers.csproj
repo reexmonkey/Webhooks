@@ -2,15 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Reexmonkey.Webhooks.Core.Repositories.Contracts</RootNamespace>
+    <RootNamespace>Reexmonkey.Webhooks.Core.Services.Publishers</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="xmisc.backbone.repositories.contracts" Version="8.1.4" />
+    <PackageReference Include="ServiceStack.Interfaces.Core" Version="5.11.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Webhooks.Core.Domain.Concretes\Webhooks.Core.Domain.Concretes.csproj" />
   </ItemGroup>
-
 </Project>

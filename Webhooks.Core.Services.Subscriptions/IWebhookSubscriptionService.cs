@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Webhooks.Core.Services.Contracts.Requests;
 using Webhooks.Core.Services.Contracts.Responses;
 
 namespace Webhooks.Core.Services.Contracts

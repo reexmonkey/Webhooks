@@ -25,6 +25,8 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
         [ApiMember(Description = "The unique name of the webhook subscription.", IsRequired = true)]
         public string Name { get; set; }
 
+        public string UserId { get; set; }
+
         /// <summary>
         /// The subscribed webhook.
         /// </summary>

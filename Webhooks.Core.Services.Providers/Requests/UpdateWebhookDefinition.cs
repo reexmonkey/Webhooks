@@ -1,9 +1,9 @@
-﻿using ServiceStack;
+﻿using Reexmonkey.Webhooks.Core.Services.Publishers.Responses;
+using ServiceStack;
 using System;
 using System.Collections.Generic;
-using Webhooks.Core.Services.Contracts.Responses;
 
-namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
+namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
 {
     /// <summary>
     /// Specifies a service request to update a webhook definition.
@@ -18,10 +18,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
         public Guid Id { get; set; }
 
         /// <summary>
-        /// The unique identifier of the provider, who created the webhook definition.
+        /// The unique identifier of the publisher, who created the webhook definition.
         /// </summary>
-        [ApiMember(Description = "The unique identifier of the provider, who created the webhook definition.", IsRequired = true)]
-        public Guid ProviderId { get; set; }
+        [ApiMember(Description = "The unique identifier of the publisher, who created the webhook definition.", IsRequired = true)]
+        public Guid PublisherId { get; set; }
 
         /// <summary>
         /// The unique name of the webhook definition.
@@ -51,9 +51,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
         public List<string> Tags { get; set; }
 
         /// <summary>
-        /// The password to authenticate the provider and providerize the publish operation.
+        /// The password to authenticate the publisher and publisherize the publish operation.
         /// </summary>
-        [ApiMember(Description = "The password to authenticate the provider and providerize the publish operation.", IsRequired = true)]
+        [ApiMember(Description = "The password to authenticate the publisher and publisherize the publish operation.", IsRequired = true)]
         public string Password { get; set; }
 
         /// <summary>
@@ -82,8 +82,7 @@ namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Requests
     [Tag("Update")]
     [Tag("Webhooks")]
     [Tag("Definitions")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/definitions/{Id}", "PUT")]
+    [Route("/webhooks/definitions/{Id}", "PUT")]
     public sealed class UpdateWebhookDefinition : UpdateWebhookDefinitionBase
     {
     }

@@ -1,7 +1,7 @@
 ﻿using Reexmonkey.Webhooks.Core.Domain.Concretes.Models;
 using ServiceStack;
 
-namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Responses
+namespace Reexmonkey.Webhooks.Core.Services.Publishers.Responses
 {
     /// <summary>
     /// Represents a service response that encapsulates a webhook definition.
@@ -16,10 +16,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Providers.Contracts.Responses
         public WebhookDefinition Definition { get; set; }
 
         /// <summary>
-        /// The unique name of the webhook provider.
+        /// The unique name of the webhook publisher.
         /// </summary>
-        [ApiMember(Description = "The unique name of the webhook provider.", IsRequired = true)]
-        public string ProviderName { get; set; }
+        [ApiMember(Description = "The unique name of the webhook publisher.", IsRequired = true)]
+        public string PublisherName { get; set; }
 
         /// <summary>
         /// The response status of the service response.

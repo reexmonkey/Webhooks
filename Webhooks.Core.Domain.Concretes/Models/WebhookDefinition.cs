@@ -23,8 +23,8 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
         /// The unique identifier of the webhook definition provider.
         /// </summary>
         [ApiMember(Description = "The unique identifier of the webhook definition provider.", IsRequired = false)]
-        [References(typeof(WebhookProvider))]
-        public Guid WebhookProviderId { get; set; }
+        [References(typeof(WebhookPublisher))]
+        public Guid WebhookPublisherId { get; set; }
 
         /// <summary>
         /// The unique name of the webhook definition.

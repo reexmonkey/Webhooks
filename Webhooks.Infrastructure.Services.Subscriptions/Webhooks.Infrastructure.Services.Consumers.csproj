@@ -8,5 +8,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Webhooks.Core.Services.Subscriptions\Webhooks.Core.Services.Subscriptions.csproj" />
   </ItemGroup>
-
 </Project>

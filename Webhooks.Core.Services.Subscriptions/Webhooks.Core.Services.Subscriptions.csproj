@@ -1,7 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Reexmonkey.Webhooks.Core.Services.Subscriptions</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,5 +12,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Webhooks.Core.Domain.Concretes\Webhooks.Core.Domain.Concretes.csproj" />
   </ItemGroup>
-
 </Project>

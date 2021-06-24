@@ -1,7 +1,7 @@
 ﻿using Reexmonkey.Webhooks.Core.Domain.Concretes.Models;
 using ServiceStack;
 
-namespace Webhooks.Core.Services.Contracts.Responses
+namespace Reexmonkey.Webhooks.Core.Services.Publishers.Responses
 {
     /// <summary>
     /// Represents a service response that encapsulates a webhook event.

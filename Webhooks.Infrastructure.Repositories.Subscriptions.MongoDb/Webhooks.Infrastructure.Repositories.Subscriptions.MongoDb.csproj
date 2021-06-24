@@ -10,8 +10,4 @@
     <PackageReference Include="xmisc.core.linq" Version="6.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Webhooks.Core.Repositories.Subscriptions\Webhooks.Core.Repositories.Subscriptions.csproj" />
-  </ItemGroup>
-
 </Project>
