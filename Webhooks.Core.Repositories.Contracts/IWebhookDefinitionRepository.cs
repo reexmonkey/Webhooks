@@ -4,6 +4,9 @@ using System;
 
 namespace Reexmonkey.Webhooks.Core.Repositories
 {
+    /// <summary>
+    /// Specifies the repository for webhook definitions.
+    /// </summary>
     public interface IWebhookDefinitionRepository :
         IReadRepository<Guid, WebhookDefinition>,
         IWriteRepository<Guid, WebhookDefinition>,

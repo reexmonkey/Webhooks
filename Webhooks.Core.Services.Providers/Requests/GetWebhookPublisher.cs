@@ -21,9 +21,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to retrieve a webhook publisher in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to retrieve a webhook publisher in a synchronous operation.")]
-    [Tag("Get")]
     [Tag("Webhooks")]
     [Tag("Publishers")]
+    [Tag("Retrievals")]
     [Route("/webhooks/publishers/{Id}", "GET")]
     public sealed class GetWebhookPublisher : GetWebhookPublisherBase
     {
@@ -33,9 +33,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to retrieve a webhook publisher in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to retrieve a webhook publisher in an asynchronous operation.")]
-    [Tag("Get")]
     [Tag("Webhooks")]
     [Tag("Publishers")]
+    [Tag("Retrievals")]
     [Tag("Async")]
     [Route("/async/webhooks/publishers/{Id}", "GET")]
     public sealed class GetWebhookPublisherAsync : GetWebhookPublisherBase

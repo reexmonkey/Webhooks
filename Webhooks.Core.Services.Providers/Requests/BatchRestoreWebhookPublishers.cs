@@ -23,10 +23,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// </summary>
     [Api("Represents a service request to restore soft-deleted webhook publishers in a synchronous operation.")]
     [Tag("Batch")]
-    [Tag("Restore")]
     [Tag("Webhooks")]
     [Tag("Publishers")]
-    [Route("/webhooks/undeletions/publishers", "POST")]
+    [Tag("Undeletions")]
+    [Route("/webhooks/publishers/undeletions", "POST")]
     public sealed class BatchRestoreWebhookPublishers : BatchRestoreWebhookPublishersBase
     {
     }
@@ -36,11 +36,11 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// </summary>
     [Api("Represents a service request to restore soft-deleted webhook publishers in an asynchronous operation.")]
     [Tag("Batch")]
-    [Tag("Restore")]
     [Tag("Webhooks")]
     [Tag("Publishers")]
+    [Tag("Undeletions")]
     [Tag("Async")]
-    [Route("/async/webhooks/undeletions/publishers", "POST")]
+    [Route("/async/webhooks/publishers/undeletions", "POST")]
     public sealed class BatchRestoreWebhookPublishersAsync : BatchRestoreWebhookPublishersBase
     {
     }

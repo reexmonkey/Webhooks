@@ -21,11 +21,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests
     /// Represents a service request to restore a soft-deleted webhook subscription in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to restore a soft-deleted webhook subscription in a synchronous operation.")]
-    [Tag("Restore")]
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/undeletions/subscriptions/{Id}", "POST")]
+    [Tag("Undeletions")]
+    [Route("/sync/webhooks/subscriptions/{Id}/undeletions", "POST")]
     public sealed class RestoreWebhookSubscription : RestoreWebhookSubscriptionBase
     {
     }
@@ -34,11 +33,11 @@ namespace Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests
     /// Represents a service request to restore a soft-deleted webhook subscription in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to restore a soft-deleted webhook subscription in an asynchronous operation.")]
-    [Tag("Restore")]
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
+    [Tag("Undeletions")]
     [Tag("Async")]
-    [Route("/async/webhooks/undeletions/subscriptions/{Id}/undeletions", "POST")]
+    [Route("/async/webhooks/subscriptions/{Id}/undeletions", "POST")]
     public sealed class RestoreWebhookSubscriptionAsync : RestoreWebhookSubscriptionBase
     {
     }

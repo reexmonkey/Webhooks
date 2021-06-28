@@ -29,11 +29,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests
     /// </summary>
     [Api("Represents a service request to delete a batch of webhook subscriptions in a synchronous operation.")]
     [Tag("Batch")]    
-    [Tag("Delete")]
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/subscriptions", "DELETE")]
+    [Tag("Deletions")]
+    [Route("/webhooks/subscriptions", "DELETE")]
     public sealed class BatchDeleteWebhookSubscriptions : BatchDeleteWebhookSubscriptionsBase
     {
     }
@@ -43,9 +42,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests
     /// </summary>
     [Api("Represents a service request to delete a batch of webhook subscriptions in an asynchronous operation.")]
     [Tag("Batch")]
-    [Tag("Delete")]
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
+    [Tag("Deletions")]
     [Tag("Async")]
     [Route("/async/webhooks/subscriptions", "DELETE")]
     public sealed class BatchDeleteWebhookSubscriptionsAsync : BatchDeleteWebhookSubscriptionsBase

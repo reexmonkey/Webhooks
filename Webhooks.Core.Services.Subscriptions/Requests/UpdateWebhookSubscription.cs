@@ -9,7 +9,7 @@ namespace Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests
     /// Specifies a service request to update a webhook subscription.
     /// </summary>
     [Api("Specifies a service request to update a webhook subscription.")]
-    public abstract class UpdateWebhookSubscriptionBase : IPost, IReturn<WebhookSubscriptionResponse>
+    public abstract class UpdateWebhookSubscriptionBase : IPut, IReturn<WebhookSubscriptionResponse>
     {
         /// <summary>
         /// The unique identifier of the webhook subscription.
@@ -74,11 +74,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests
     /// Represents a service request to to update a webhook subscription in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to to update a webhook subscription in a synchronous operation.")]
-    [Tag("Update")]
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/subscriptions/{Id}", "PUT")]
+    [Tag("Updates")]
+    [Route("/webhooks/subscriptions/{Id}", "PUT")]
     public sealed class UpdateWebhookSubscription : UpdateWebhookSubscriptionBase
     {
     }
@@ -87,9 +86,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests
     /// Represents a service request to to update a webhook subscription in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to to update a webhook subscription in an asynchronous operation.")]
-    [Tag("Update")]
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
+    [Tag("Updates")]
     [Tag("Async")]
     [Route("/async/webhooks/subscriptions/{Id}", "PUT")]
     public sealed class UpdateWebhookSubscriptionAsync : UpdateWebhookSubscriptionBase

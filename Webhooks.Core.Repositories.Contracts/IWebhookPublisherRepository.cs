@@ -4,6 +4,9 @@ using System;
 
 namespace Reexmonkey.Webhooks.Core.Repositories
 {
+    /// <summary>
+    /// Specifies a repository for webhook publishers
+    /// </summary>
     public interface IWebhookPublisherRepository :
         IReadRepository<Guid, WebhookPublisher>,
         IWriteRepository<Guid, WebhookPublisher>,

@@ -51,9 +51,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
         public List<string> Tags { get; set; }
 
         /// <summary>
-        /// The password to authenticate the publisher and publisherize the publish operation.
+        /// The password to authenticate the publisher and authorize the publish operation.
         /// </summary>
-        [ApiMember(Description = "The password to authenticate the publisher and publisherize the publish operation.", IsRequired = true)]
+        [ApiMember(Description = "The password to authenticate the publisher and authorize the publish operation.", IsRequired = true)]
         public string Password { get; set; }
 
         /// <summary>
@@ -79,10 +79,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to to update a webhook definition in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to to update a webhook definition in a synchronous operation.")]
-    [Tag("Update")]
     [Tag("Webhooks")]
     [Tag("Definitions")]
-    [Route("/webhooks/definitions/{Id}", "PUT")]
+    [Tag("Updates")]
+    [Route("/webhooks/publishers/{PublisherId}/definitions/{Id}", "PUT")]
     public sealed class UpdateWebhookDefinition : UpdateWebhookDefinitionBase
     {
     }
@@ -91,11 +91,11 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to to update a webhook definition in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to to update a webhook definition in an asynchronous operation.")]
-    [Tag("Update")]
     [Tag("Webhooks")]
     [Tag("Definitions")]
+    [Tag("Updates")]
     [Tag("Async")]
-    [Route("/async/webhooks/definitions/{Id}", "PUT")]
+    [Route("/async/webhooks/publishers/{PublisherId}/definitions/{Id}", "PUT")]
     public sealed class UpdateWebhookDefinitionAsync : UpdateWebhookDefinitionBase
     {
     }

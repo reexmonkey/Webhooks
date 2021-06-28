@@ -24,9 +24,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
         public WebhookDefinition Webhook { get; set; }
 
         /// <summary>
-        /// The password to publisherize the publish operation.
+        /// The password to authorize the publish operation.
         /// </summary>
-        [ApiMember(Description = "The password to publisherize the publish operation.", IsRequired = true)]
+        [ApiMember(Description = "The password to authorize the publish operation.", IsRequired = true)]
         public string Password { get; set; }
     }
 
@@ -34,9 +34,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to publish a webhook definition in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to publish a webhook definition in a synchronous operation.")]
-    [Tag("Publish")]
-    [Tag("Webhook")]
-    [Tag("Definition")]
+    [Tag("Webhooks")]
+    [Tag("Definitions")]
+    [Tag("Publications")]
     [Route("/webhooks/publishers/{PublisherId}/publications", "POST")]
     public sealed class PublishWebhookDefinition : PublishWebhookDefinitionsBase
     {
@@ -46,9 +46,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to publish a webhook definition in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to publish a webhook definition in an asynchronous operation.")]
-    [Tag("Publish")]
-    [Tag("Webhook")]
-    [Tag("Definition")]
+    [Tag("Webhooks")]
+    [Tag("Definitions")]
+    [Tag("Publications")]
     [Tag("Async")]
     [Route("/async/webhooks/publishers/{PublisherId}/publications", "POST")]
     public sealed class PublishWebhookDefinitionAsync : PublishWebhookDefinitionsBase

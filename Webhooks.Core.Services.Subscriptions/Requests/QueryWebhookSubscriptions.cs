@@ -65,11 +65,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests
     /// Represents a service request to query for webhook subscriptions in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to query for webhook subscriptions in a synchronous operation.")]
-    [Tag("Query")]
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/subscriptions", "GET")]
+    [Tag("Queries")]
+    [Route("/webhooks/subscriptions", "GET")]
     public sealed class QueryWebhookSubscriptions : QueryWebhookSubscriptionsBase
     {
     }
@@ -78,9 +77,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests
     /// Represents a service request to query for webhook subscriptions in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to query for webhook subscriptions in an asynchronous operation.")]
-    [Tag("Query")]
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
+    [Tag("Queries")]
     [Tag("Async")]
     [Route("/async/webhooks/subscriptions", "GET")]
     public sealed class QueryWebhookSubscriptionsAsync : QueryWebhookSubscriptionsBase

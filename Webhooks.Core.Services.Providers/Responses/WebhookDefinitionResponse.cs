@@ -16,21 +16,15 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Responses
         public WebhookDefinition Definition { get; set; }
 
         /// <summary>
-        /// The unique name of the webhook publisher.
-        /// </summary>
-        [ApiMember(Description = "The unique name of the webhook publisher.", IsRequired = true)]
-        public string PublisherName { get; set; }
-
-        /// <summary>
         /// The response status of the service response.
         /// </summary>
         [ApiMember(Description = "The response status of the service response.")]
         public ResponseStatus ResponseStatus { get; set; }
 
         public static explicit operator WebhookDefinition(WebhookDefinitionResponse response)
-        => response.Definition;
+        => response?.Definition;
 
         public static implicit operator WebhookDefinitionResponse(WebhookDefinition definition)
-            => new WebhookDefinitionResponse { Definition = definition };
+            => definition != null ? new WebhookDefinitionResponse { Definition = definition } : default;
     }
 }

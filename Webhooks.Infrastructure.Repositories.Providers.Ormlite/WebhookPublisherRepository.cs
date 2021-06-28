@@ -1,11 +1,9 @@
 ﻿using reexmonkey.xmisc.backbone.repositories.contracts.extensions;
 using Reexmonkey.Webhooks.Core.Domain.Concretes.Models;
-using Reexmonkey.Webhooks.Core.Repositories.Contracts;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -14,16 +12,16 @@ using System.Transactions;
 
 namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
 {
-    public class WebhookProviderRepository : IWebhookProviderRepository
+    public class WebhookPublisherRepository : IWebhookPublisherRepository
     {
-        private readonly IWebhookDefinitionRepository webhookDefinitionRepository;
+        private readonly IWebhookDefinitionRepository definitionRepository;
         private readonly IDbConnectionFactory factory;
 
-        public WebhookProviderRepository(
+        public WebhookPublisherRepository(
             IWebhookDefinitionRepository webhookDefinitionRepository,
             IDbConnectionFactory factory)
         {
-            this.webhookDefinitionRepository = webhookDefinitionRepository ?? throw new ArgumentNullException(nameof(webhookDefinitionRepository));
+            this.definitionRepository = webhookDefinitionRepository ?? throw new ArgumentNullException(nameof(webhookDefinitionRepository));
             this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
@@ -37,7 +35,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
 
         public async Task<bool> ContainsKeyAsync(Guid key, CancellationToken token = default)
         {
-            using (var db = factory.OpenDbConnection())
+            using (var db = await factory.OpenAsync())
             {
                 token.ThrowIfCancellationRequested();
                 return await db.CountAsync<WebhookPublisher>(q => q.Id == key) != 0L;
@@ -55,7 +53,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
 
         public async Task<bool> ContainsKeysAsync(IEnumerable<Guid> keys, bool strict = true, CancellationToken token = default)
         {
-            using (var db = factory.OpenDbConnection())
+            using (var db = await factory.OpenAsync())
             {
                 token.ThrowIfCancellationRequested();
                 var count = await db.CountAsync<WebhookPublisher>(q => keys.Contains(q.Id), token);
@@ -89,7 +87,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             var result = 0;
             using (var scope = TransactionScopeOption.Required.AsTransactionScopeFlow())
             {
-                using (var db = factory.OpenDbConnection())
+                using (var db = await factory.OpenAsync())
                 {
                     result = await db.DeleteByIdsAsync<WebhookPublisher>(keys, token: token);
                 }
@@ -119,7 +117,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             int deletes = 0;
             using (var scope = TransactionScopeOption.Required.AsTransactionScopeFlow())
             {
-                using (var db = factory.OpenDbConnection())
+                using (var db = await factory.OpenAsync())
                 {
                     deletes = await db.DeleteByIdAsync<WebhookPublisher>(key);
                 }
@@ -133,20 +131,20 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             using (var db = factory.OpenDbConnection())
             {
                 var query = db.From<WebhookPublisher>().Where(predicate).Skip(offset).Take(count);
-                var matches = db.Select(query);
-                if (matches.Any() && references.HasValue && references.Value) HydrateAll(matches);
-                return matches;
+                return references.HasValue && references.Value
+                    ? db.LoadSelect(query)
+                    : db.Select(query);
             }
         }
 
         public async Task<List<WebhookPublisher>> FindAllAsync(Expression<Func<WebhookPublisher, bool>> predicate, bool? references = null, int? offset = null, int? count = null, CancellationToken token = default)
         {
-            using (var db = factory.OpenDbConnection())
+            using (var db = await factory.OpenAsync())
             {
                 var query = db.From<WebhookPublisher>().Where(predicate).Skip(offset).Take(count);
-                var matches = await db.SelectAsync(query, token);
-                if (matches.Any() && references.HasValue && references.Value) HydrateAll(matches);
-                return matches;
+                return references.HasValue && references.Value
+                    ? await db.LoadSelectAsync(query, token: token)
+                    : await db.SelectAsync(query, token);
             }
         }
 
@@ -160,9 +158,9 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
         {
             using (var db = factory.OpenDbConnection())
             {
-                var match = db.SingleById<WebhookPublisher>(key);
-                if (match != null && references.HasValue && references.Value) Hydrate(match);
-                return match;
+                return references.HasValue && references.Value
+                    ? db.LoadSingleById<WebhookPublisher>(key)
+                    : db.SingleById<WebhookPublisher>(key);
             }
         }
 
@@ -170,9 +168,9 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
         {
             using (var db = await factory.OpenAsync(token))
             {
-                var match = await db.SingleByIdAsync<WebhookPublisher>(key, token);
-                if (match != null && references.HasValue && references.Value) Hydrate(match);
-                return match;
+                return references.HasValue && references.Value
+                    ? await db.LoadSingleByIdAsync<WebhookPublisher>(key, token: token)
+                    : await db.SingleByIdAsync<WebhookPublisher>(key, token);
             }
         }
 
@@ -181,20 +179,20 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             using (var db = factory.OpenDbConnection())
             {
                 var query = db.From<WebhookPublisher>().Skip(offset).Take(count);
-                var matches = db.Select(query);
-                if (matches.Any() && references.HasValue && references.Value) HydrateAll(matches);
-                return matches;
+                return references.HasValue && references.Value
+                    ? db.LoadSelect(query)
+                    : db.Select(query);
             }
         }
 
         public async Task<List<WebhookPublisher>> GetAsync(bool? references = null, int? offset = null, int? count = null, CancellationToken token = default)
         {
-            using (var db = factory.OpenDbConnection())
+            using (var db = await factory.OpenAsync(token))
             {
                 var query = db.From<WebhookPublisher>().Skip(offset).Take(count);
-                var matches = await db.SelectAsync(query, token);
-                if (matches.Any() && references.HasValue && references.Value) HydrateAll(matches);
-                return matches;
+                return references.HasValue && references.Value
+                    ? await db.LoadSelectAsync(query, token: token)
+                    : await db.SelectAsync(query, token: token);
             }
         }
 
@@ -209,122 +207,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
 
         public async Task<List<Guid>> GetKeysAsync(int? offset = null, int? count = null, CancellationToken token = default)
         {
-            using (var db = factory.OpenDbConnection())
+            using (var db = await factory.OpenAsync(token))
             {
                 var query = db.From<WebhookPublisher>().Select(x => x.Id).Skip(offset).Take(count);
                 return await db.SelectAsync<Guid>(query);
-            }
-        }
-
-        public void Hydrate(WebhookPublisher model)
-        {
-            using (var db = factory.OpenDbConnection())
-            {
-                var query = db.From<WebhookPublisher>()
-                    .Join<WebhookPublisher, WebhookDefinition>((provider, definition) => provider.Id == definition.WebhookPublisherId)
-                    .Where(x => x.Id == model.Id);
-
-                var webhooks = db.SelectMulti<WebhookPublisher, WebhookDefinition>(query).Select(x => x.Item2);
-
-                if (webhooks.Any())
-                {
-                    if (model.Webhooks == null) model.Webhooks = new List<WebhookDefinition>();
-                    if (model.Webhooks.Any())
-                    {
-                        var incoming = webhooks.Except(model.Webhooks);
-                        model.Webhooks.AddRange(incoming);
-                    }
-                    else model.Webhooks.AddRange(webhooks);
-                }
-            }
-        }
-
-        private static Dictionary<WebhookPublisher, List<WebhookDefinition>> GetProvidersWebhooksMap(IEnumerable<Guid> keys, IDbConnection db)
-        {
-            var query = db.From<WebhookPublisher>()
-                .Join<WebhookPublisher, WebhookDefinition>((provider, definition) => provider.Id == definition.WebhookPublisherId)
-                .Where(x => keys.Contains(x.Id));
-
-            var matches = db.SelectMulti<WebhookPublisher, WebhookDefinition>(query);
-            return matches.GroupBy(x => x.Item1).ToDictionary(g => g.Key, g => g.Select(tuple => tuple.Item2).ToList());
-        }
-
-        private static async Task<Dictionary<WebhookPublisher, List<WebhookDefinition>>> GetProvidersWebhooksMapAsync(IEnumerable<Guid> keys, IDbConnection db, CancellationToken token)
-        {
-            var query = db.From<WebhookPublisher>()
-                .Join<WebhookPublisher, WebhookDefinition>((provider, definition) => provider.Id == definition.WebhookPublisherId)
-                .Where(x => keys.Contains(x.Id));
-
-            var matches = await db.SelectMultiAsync<WebhookPublisher, WebhookDefinition>(query, token);
-            return matches.GroupBy(x => x.Item1).ToDictionary(g => g.Key, g => g.Select(tuple => tuple.Item2).ToList());
-        }
-
-        public void HydrateAll(IEnumerable<WebhookPublisher> models)
-        {
-            var keys = models.Select(x => x.Id);
-            using (var db = factory.OpenDbConnection())
-            {
-                var map = GetProvidersWebhooksMap(keys, db);
-                foreach (var model in models)
-                {
-                    if (model.Webhooks == null) model.Webhooks = new List<WebhookDefinition>();
-                    if (map.TryGetValue(model, out List<WebhookDefinition> webhooks))
-                    {
-                        if (!webhooks.Any()) continue;
-                        if (model.Webhooks.Any())
-                        {
-                            var incoming = webhooks.Except(model.Webhooks);
-                            model.Webhooks.AddRange(incoming);
-                        }
-                        else model.Webhooks.AddRange(webhooks);
-                    }
-                }
-            }
-        }
-
-        public async Task HydrateAllAsync(IEnumerable<WebhookPublisher> models, CancellationToken token = default)
-        {
-            var keys = models.Select(x => x.Id);
-            using (var db = await factory.OpenAsync(token))
-            {
-                var map = await GetProvidersWebhooksMapAsync(keys, db, token);
-                foreach (var model in models)
-                {
-                    if (model.Webhooks == null) model.Webhooks = new List<WebhookDefinition>();
-                    if (map.TryGetValue(model, out List<WebhookDefinition> webhooks))
-                    {
-                        if (!webhooks.Any()) continue;
-                        if (model.Webhooks.Any())
-                        {
-                            var incoming = webhooks.Except(model.Webhooks);
-                            model.Webhooks.AddRange(incoming);
-                        }
-                        else model.Webhooks.AddRange(webhooks);
-                    }
-                }
-            }
-        }
-
-        public async Task HydrateAsync(WebhookPublisher model, CancellationToken token = default)
-        {
-            using (var db = await factory.OpenAsync(token))
-            {
-                var query = db.From<WebhookPublisher>()
-                    .Join<WebhookPublisher, WebhookDefinition>((provider, definition) => provider.Id == definition.WebhookPublisherId)
-                    .Where(x => x.Id == model.Id);
-
-                var webhooks = (await db.SelectMultiAsync<WebhookPublisher, WebhookDefinition>(query)).Select(x => x.Item2);
-
-                if (webhooks.Any())
-                {
-                    if (model.Webhooks == null) model.Webhooks = new List<WebhookDefinition>();
-                    if (model.Webhooks.Any())
-                    {
-                        var incoming = webhooks.Except(model.Webhooks);
-                        model.Webhooks.AddRange(incoming);
-                    }
-                    else model.Webhooks.AddRange(webhooks);
-                }
             }
         }
 
@@ -333,10 +219,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             model.IsDeleted = false;
             if (references.HasValue
                 && references.Value
-                && model.Webhooks != null
-                && model.Webhooks.Any())
+                && model.Definitions != null
+                && model.Definitions.Any())
             {
-                webhookDefinitionRepository.RestoreAll(model.Webhooks, references);
+                definitionRepository.RestoreAll(model.Definitions, references);
             }
             Save(model, references);
         }
@@ -349,10 +235,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
                 foreach (var model in models)
                 {
                     model.IsDeleted = false;
-                    if (model.Webhooks != null && model.Webhooks.Any())
-                        webhooks.AddRange(model.Webhooks);
+                    if (model.Definitions != null && model.Definitions.Any())
+                        webhooks.AddRange(model.Definitions);
                 }
-                if (webhooks.Any()) webhookDefinitionRepository.RestoreAll(webhooks, references);
+                if (webhooks.Any()) definitionRepository.RestoreAll(webhooks, references);
             }
             SaveAll(models, references);
         }
@@ -365,10 +251,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
                 foreach (var model in models)
                 {
                     model.IsDeleted = false;
-                    if (model.Webhooks != null && model.Webhooks.Any())
-                        webhooks.AddRange(model.Webhooks);
+                    if (model.Definitions != null && model.Definitions.Any())
+                        webhooks.AddRange(model.Definitions);
                 }
-                if (webhooks.Any()) await webhookDefinitionRepository.RestoreAllAsync(webhooks, references, token);
+                if (webhooks.Any()) await definitionRepository.RestoreAllAsync(webhooks, references, token);
             }
             await SaveAllAsync(models, references, token);
         }
@@ -397,10 +283,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             model.IsDeleted = false;
             if (references.HasValue
                 && references.Value
-                && model.Webhooks != null
-                && model.Webhooks.Any())
+                && model.Definitions != null
+                && model.Definitions.Any())
             {
-                await webhookDefinitionRepository.RestoreAllAsync(model.Webhooks, references);
+                await definitionRepository.RestoreAllAsync(model.Definitions, references);
             }
             await SaveAsync(model, references);
         }
@@ -426,7 +312,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             {
                 using (var db = factory.OpenDbConnection())
                 {
-                    inserted = db.Save(model, references ?? false);
+                    inserted = db.Save(model, references ?? true);
                 }
                 scope.Complete();
             }
@@ -441,32 +327,33 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
                 using (var db = factory.OpenDbConnection())
                 {
                     inserts = db.SaveAll(models);
+
                     if (references.HasValue && references.Value)
                     {
-                        var map = models.ToDictionary(model => model, model => model.Webhooks);
+                        var map = models.ToDictionary(model => model, model => model.Definitions);
                         if (map.Any()) //references available
                         {
                             var definitions = map.SelectMany(x => x.Value);
                             var keys = definitions.Select(x => x.Id);
-                            var matches = webhookDefinitionRepository.FindAllByKeys(keys, references: false);
+                            var matches = definitionRepository.FindAllByKeys(keys, references: false);
 
                             var @in = definitions.Except(matches); //new references
                             var same = definitions.Intersect(matches); //same references
                             var @out = matches.Except(definitions); //stale references
 
-                            if (@in.Any()) webhookDefinitionRepository.SaveAll(@in, references: false); //save new references
-                            if (same.Any()) webhookDefinitionRepository.SaveAll(same, references: false); //update existing references
-                            if (@out.Any()) webhookDefinitionRepository.EraseAll(@out); //erase stale references
+                            if (@in.Any()) definitionRepository.SaveAll(@in, references: false); //save new references
+                            if (same.Any()) definitionRepository.SaveAll(same, references: false); //update existing references
+                            if (@out.Any()) definitionRepository.EraseAll(@out); //erase stale references
                         }
                         else //references not available: delete all former joins
                         {
                             var keys = models.Select(x => x.Id);
                             var query = db
                                 .From<WebhookDefinition>()
-                                .Join<WebhookPublisher, WebhookDefinition>((provider, definition) => provider.Id == definition.WebhookPublisherId)
+                                .Join<WebhookPublisher, WebhookDefinition>((publisher, definition) => publisher.Id == definition.WebhookPublisherId)
                                 .Where(x => keys.Contains(x.WebhookPublisherId));
                             var remote = db.Select(query);
-                            if (remote.Any()) webhookDefinitionRepository.EraseAll(remote);
+                            if (remote.Any()) definitionRepository.EraseAll(remote);
                         }
                     }
                 }
@@ -480,36 +367,37 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             var inserts = 0;
             using (var scope = TransactionScopeOption.Required.AsTransactionScopeFlow())
             {
-                using (var db = factory.OpenDbConnection())
+                using (var db = await factory.OpenAsync(token))
                 {
-                    inserts = await db.SaveAllAsync(models);
+                    inserts = await db.SaveAllAsync(models, token: token);
+
                     if (references.HasValue && references.Value)
                     {
-                        var map = models.ToDictionary(model => model, model => model.Webhooks);
+                        var map = models.ToDictionary(model => model, model => model.Definitions);
 
                         if (map.Any()) //references available
                         {
                             var webhooks = map.SelectMany(x => x.Value);
                             var keys = webhooks.Select(x => x.Id);
-                            var matches = await webhookDefinitionRepository.FindAllByKeysAsync(keys, references: false);
+                            var matches = await definitionRepository.FindAllByKeysAsync(keys, references: false, token: token);
 
                             var @in = webhooks.Except(matches); //new references
                             var same = webhooks.Intersect(matches); //same references
                             var @out = matches.Except(webhooks); //stale references
 
-                            if (@in.Any()) await webhookDefinitionRepository.SaveAllAsync(@in, references: false); //save new references
-                            if (same.Any()) await webhookDefinitionRepository.SaveAllAsync(same, references: false); //update existing references
-                            if (@out.Any()) await webhookDefinitionRepository.EraseAllAsync(@out); //erase stale references
+                            if (@in.Any()) await definitionRepository.SaveAllAsync(@in, references: false, token: token); //save new references
+                            if (same.Any()) await definitionRepository.SaveAllAsync(same, references: false, token: token); //update existing references
+                            if (@out.Any()) await definitionRepository.EraseAllAsync(@out, token: token); //erase stale references
                         }
                         else //references not available: delete all former joins
                         {
                             var keys = models.Select(x => x.Id);
                             var query = db
                                 .From<WebhookDefinition>()
-                                .Join<WebhookPublisher, WebhookDefinition>((provider, definition) => provider.Id == definition.WebhookPublisherId)
+                                .Join<WebhookPublisher, WebhookDefinition>((publisher, definition) => publisher.Id == definition.WebhookPublisherId)
                                 .Where(x => keys.Contains(x.WebhookPublisherId));
                             var remote = db.Select(query);
-                            if (remote.Any()) webhookDefinitionRepository.EraseAll(remote);
+                            if (remote.Any()) await definitionRepository.EraseAllAsync(remote, token: token);
                         }
                     }
                 }
@@ -523,9 +411,9 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             var inserted = false;
             using (var scope = TransactionScopeOption.Required.AsTransactionScopeFlow())
             {
-                using (var db = factory.OpenDbConnection())
+                using (var db = await factory.OpenAsync())
                 {
-                    inserted = await db.SaveAsync(model, references ?? false);
+                    inserted = await db.SaveAsync(model, references ?? true);
                 }
                 scope.Complete();
             }
@@ -537,10 +425,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             model.IsDeleted = true;
             if (references.HasValue
                 && references.Value
-                && model.Webhooks != null
-                && model.Webhooks.Any())
+                && model.Definitions != null
+                && model.Definitions.Any())
             {
-                webhookDefinitionRepository.TrashAll(model.Webhooks, references);
+                definitionRepository.TrashAll(model.Definitions, references);
             }
             Save(model, references);
         }
@@ -553,10 +441,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
                 foreach (var model in models)
                 {
                     model.IsDeleted = true;
-                    if (model.Webhooks != null && model.Webhooks.Any())
-                        webhooks.AddRange(model.Webhooks);
+                    if (model.Definitions != null && model.Definitions.Any())
+                        webhooks.AddRange(model.Definitions);
                 }
-                if (webhooks.Any()) webhookDefinitionRepository.TrashAll(webhooks, references);
+                if (webhooks.Any()) definitionRepository.TrashAll(webhooks, references);
             }
             SaveAll(models, references);
         }
@@ -569,10 +457,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
                 foreach (var model in models)
                 {
                     model.IsDeleted = true;
-                    if (model.Webhooks != null && model.Webhooks.Any())
-                        webhooks.AddRange(model.Webhooks);
+                    if (model.Definitions != null && model.Definitions.Any())
+                        webhooks.AddRange(model.Definitions);
                 }
-                if (webhooks.Any()) await webhookDefinitionRepository.TrashAllAsync(webhooks, references, token);
+                if (webhooks.Any()) await definitionRepository.TrashAllAsync(webhooks, references, token);
             }
             await SaveAllAsync(models, references, token);
         }
@@ -591,8 +479,8 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             int? count = null,
             CancellationToken token = default)
         {
-            var matches = await FindAllByKeysAsync(keys, references, offset, count);
-            if (matches.Any()) await TrashAllAsync(matches, references);
+            var matches = await FindAllByKeysAsync(keys, references, offset, count, token: token);
+            if (matches.Any()) await TrashAllAsync(matches, references, token: token);
             return matches;
         }
 
@@ -601,10 +489,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             model.IsDeleted = true;
             if (references.HasValue
                 && references.Value
-                && model.Webhooks != null
-                && model.Webhooks.Any())
+                && model.Definitions != null
+                && model.Definitions.Any())
             {
-                await webhookDefinitionRepository.TrashAllAsync(model.Webhooks, references);
+                await definitionRepository.TrashAllAsync(model.Definitions, references);
             }
             await SaveAsync(model, references);
         }
@@ -618,8 +506,8 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
 
         public async Task<WebhookPublisher> TrashByKeyAsync(Guid key, bool? references = null, CancellationToken token = default)
         {
-            var match = await FindByKeyAsync(key, references).ConfigureAwait(false);
-            if (match != null) await TrashAsync(match, references).ConfigureAwait(false);
+            var match = await FindByKeyAsync(key, references, token: token);
+            if (match != null) await TrashAsync(match, references);
             return match;
         }
     }

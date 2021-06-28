@@ -23,9 +23,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
         public bool Permanently { get; set; }
 
         /// <summary>
-        /// The password to authenticate the webhook publisher and publisherize the delete operation.
+        /// The password to authenticate the webhook publisher and authorize the delete operation.
         /// </summary>
-        [ApiMember(Description = "The password to authenticate the webhook publisher and publisherize the delete operation.", IsRequired = true)]
+        [ApiMember(Description = "The password to authenticate the webhook publisher and authorize the delete operation.", IsRequired = true)]
         public string Password { get; set; }
     }
 
@@ -33,9 +33,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to delete a webhook publisher in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to delete a webhook publisher in a synchronous operation.")]
-    [Tag("Delete")]
     [Tag("Webhooks")]
     [Tag("Publishers")]
+    [Tag("Deletions")]
     [Route("/webhooks/publishers/{Id}", "DELETE")]
     public sealed class DeleteWebhookPublisher : DeleteWebhookPublisherBase
     {
@@ -45,9 +45,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to delete a webhook publisher in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to delete a webhook publisher in an asynchronous operation.")]
-    [Tag("Delete")]
     [Tag("Webhooks")]
     [Tag("Publishers")]
+    [Tag("Deletions")]
     [Tag("Async")]
     [Route("/async/webhooks/publishers/{Id}", "DELETE")]
     public sealed class DeleteWebhookPublisherAsync : DeleteWebhookPublisherBase

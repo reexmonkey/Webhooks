@@ -22,9 +22,11 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Responses
         public ResponseStatus ResponseStatus { get; set; }
 
         public static explicit operator WebhookEvent(WebhookEventResponse response)
-        => response.Event;
+        => response?.Event;
 
         public static implicit operator WebhookEventResponse(WebhookEvent @event)
-            => new WebhookEventResponse { Event = @event };
+            => @event != null
+            ? new WebhookEventResponse { Event = @event }
+            : default;
     }
 }

@@ -2,6 +2,7 @@
 using Reexmonkey.Webhooks.Core.Services.Publishers.Responses;
 using ServiceStack;
 using System;
+using System.Collections.Generic;
 
 namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
 {
@@ -9,7 +10,7 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Specifies a service request to publish a webhook event.
     /// </summary>
     [Api("Specifies a service request to raise a webhook event.")]
-    public class PublishWebhookEventBase : IPost, IReturn<WebhookEventResponse>
+    public class RaiseWebhookEventBase : IPost, IReturn<WebhookEventResponse>
     {
         /// <summary>
         /// The unique identifier of the publisher, who raises the webhook event.
@@ -27,12 +28,12 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
         /// The payload of the webhook event.
         /// </summary>
         [ApiMember(Description = "The payload of the webhook event.", IsRequired = true)]
-        public object Data { get; set; }
+        public Dictionary<string, object> Data { get; set; }
 
         /// <summary>
-        /// The password to authenticate the publisher and publisherize the publish operation.
+        /// The password to authenticate the publisher and authorize the publish operation.
         /// </summary>
-        [ApiMember(Description = "The password to authenticate the publisher and publisherize the publish operation.", IsRequired = true)]
+        [ApiMember(Description = "The password to authenticate the publisher and authorize the publish operation.", IsRequired = true)]
         public string Password { get; set; }
     }
 
@@ -40,11 +41,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to raise a webhook event in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to raise a webhook event in a synchronous operation.")]
-    [Tag("Publish")]
-    [Tag("Webhook")]
-    [Tag("Event")]
-    [Route("/webhooks/publishers/events/{Id}", "POST")]
-    public sealed class RaiseWebhookEvent : PublishWebhookEventBase
+    [Tag("Webhooks")]
+    [Tag("Events")]
+    [Route("/webhooks/publishers/{PublisherId}/events", "POST")]
+    public sealed class RaiseWebhookEvent : RaiseWebhookEventBase
     {
     }
 
@@ -56,8 +56,8 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     [Tag("Webhook")]
     [Tag("Event")]
     [Tag("Async")]
-    [Route("/async/webhooks/publishers/events/{Id}", "POST")]
-    public sealed class RaiseWebhookEventAsync : PublishWebhookEventBase
+    [Route("/async/webhooks/publishers/{PublisherId}/events", "POST")]
+    public sealed class RaiseWebhookEventAsync : RaiseWebhookEventBase
     {
     }
 }

@@ -63,11 +63,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to to update a webhook publisher in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to to update a webhook publisher in a synchronous operation.")]
-    [Tag("Update")]
     [Tag("Webhooks")]
     [Tag("Publishers")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/publishers/{Id}", "PUT")]
+    [Tag("Updates")]
+    [Route("/webhooks/publishers/{Id}", "PUT")]
     public sealed class UpdateWebhookPublisher : UpdateWebhookPublisherBase
     {
     }
@@ -76,9 +75,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to to update a webhook publisher in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to to update a webhook publisher in an asynchronous operation.")]
-    [Tag("Update")]
     [Tag("Webhooks")]
     [Tag("Publishers")]
+    [Tag("Updates")]
     [Tag("Async")]
     [Route("/async/webhooks/publishers/{Id}", "PUT")]
     public sealed class UpdateWebhookPublisherAsync : UpdateWebhookPublisherBase

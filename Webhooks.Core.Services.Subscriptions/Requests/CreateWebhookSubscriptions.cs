@@ -57,11 +57,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests
     /// Represents a service request to create webhook subscriptions.
     /// </summary>
     [Api("Represents a service request to create webhook subscriptions.")]
-    [Tag("Create")]
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/subscriptions", "POST")]
+    [Tag("Creations")]
+    [Route("/webhooks/subscriptions", "POST")]
     public sealed class CreateWebhookSubscriptions : CreateWebhookSubscriptionsBase
     {
     }
@@ -70,9 +69,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests
     /// Represents a service request to create webhook subscriptions.
     /// </summary>
     [Api("Represents a service request to create webhook subscriptions.")]
-    [Tag("Create")]
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
+    [Tag("Creations")]
     [Tag("Async")]
     [Route("/async/webhooks/subscriptions", "POST")]
     public sealed class CreateWebhookSubscriptionsAsync : CreateWebhookSubscriptionsBase

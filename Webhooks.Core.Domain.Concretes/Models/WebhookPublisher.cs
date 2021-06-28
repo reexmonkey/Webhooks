@@ -41,7 +41,7 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
         /// <summary>
         /// The password to authenticate the publisher.
         /// </summary>
-        [ApiMember(Description = "The password to authenticate the publisher.", IsRequired = false)]
+        [ApiMember(Description = "The password to authenticate the publisher.", IsRequired = true)]
         public string Password { get; set; }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
         /// </summary>
         [ApiMember(Description = "The webhook definitions associated with this publisher.", IsRequired = true)]
         [Reference]
-        public List<WebhookDefinition> Webhooks { get; set; }
+        public List<WebhookDefinition> Definitions { get; set; }
 
         /// <summary>
         /// The time (in UTC) when the profile of the webhook publisher was created.
@@ -77,7 +77,7 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
         /// </summary>
         public WebhookPublisher()
         {
-            Webhooks = new List<WebhookDefinition>();
+            Definitions = new List<WebhookDefinition>();
         }
 
         public override bool Equals(object obj)

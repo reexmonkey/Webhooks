@@ -58,9 +58,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to to create a webhook publisher in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to to create a webhook publisher in a synchronous operation.")]
-    [Tag("Create")]
     [Tag("Webhooks")]
     [Tag("Publishers")]
+    [Tag("Creations")]
     [Route("/webhooks/publishers", "POST")]
     public sealed class CreateWebhookPublisher : CreateWebhookPublisherBase
     {
@@ -70,9 +70,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to to create a webhook publisher in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to to create a webhook publisher in an asynchronous operation.")]
-    [Tag("Create")]
     [Tag("Webhooks")]
     [Tag("Publishers")]
+    [Tag("Creations")]
     [Tag("Async")]
     [Route("/async/webhooks/publishers", "POST")]
     public sealed class CreateWebhookPublisherAsync : CreateWebhookPublisherBase

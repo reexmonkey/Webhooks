@@ -1,6 +1,5 @@
 ﻿using reexmonkey.xmisc.backbone.repositories.contracts.extensions;
 using Reexmonkey.Webhooks.Core.Domain.Concretes.Models;
-using Reexmonkey.Webhooks.Core.Repositories.Contracts;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
@@ -202,7 +201,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
         public void Restore(WebhookDefinition model, bool? references = null)
         {
             model.IsDeleted = false;
-            Save(model, false);
+            Save(model, references ?? false);
         }
 
         public void RestoreAll(IEnumerable<WebhookDefinition> models, bool? references = null)
@@ -211,7 +210,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             {
                 model.IsDeleted = false;
             }
-            SaveAll(models, false);
+            SaveAll(models, references ?? false);
         }
 
         public Task RestoreAllAsync(IEnumerable<WebhookDefinition> models, bool? references = null, CancellationToken token = default)
@@ -220,19 +219,19 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             {
                 model.IsDeleted = false;
             }
-            return SaveAllAsync(models, false);
+            return SaveAllAsync(models, references ?? false);
         }
 
         public List<WebhookDefinition> RestoreAllByKeys(IEnumerable<Guid> keys, bool? references = null, int? offset = null, int? count = null)
         {
-            var matches = FindAllByKeys(keys, false, offset, count);
-            if (matches.Any()) RestoreAll(matches, false);
+            var matches = FindAllByKeys(keys, references ?? false, offset, count);
+            if (matches.Any()) RestoreAll(matches, references ?? false);
             return matches;
         }
 
         public async Task<List<WebhookDefinition>> RestoreAllByKeysAsync(IEnumerable<Guid> keys, bool? references = null, int? offset = null, int? count = null, CancellationToken token = default)
         {
-            var matches = await FindAllByKeysAsync(keys, false, offset, count, token);
+            var matches = await FindAllByKeysAsync(keys, references ?? false, offset, count, token);
             if (matches.Any()) await RestoreAllAsync(matches, false, token);
             return matches;
         }
@@ -240,20 +239,20 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
         public Task RestoreAsync(WebhookDefinition model, bool? references = null)
         {
             model.IsDeleted = false;
-            return SaveAsync(model, false);
+            return SaveAsync(model, references ?? false);
         }
 
         public WebhookDefinition RestoreByKey(Guid key, bool? references = null)
         {
-            var match = FindByKey(key, false);
-            if (match != null) Restore(match, false);
+            var match = FindByKey(key, references ?? false);
+            if (match != null) Restore(match, references ?? false);
             return match;
         }
 
         public async Task<WebhookDefinition> RestoreByKeyAsync(Guid key, bool? references = null)
         {
-            var match = await FindByKeyAsync(key, false);
-            if (match != null) await RestoreAsync(match, false);
+            var match = await FindByKeyAsync(key, references ?? false);
+            if (match != null) await RestoreAsync(match, references ?? false);
             return match;
         }
 
@@ -306,7 +305,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             {
                 using (var db = factory.OpenDbConnection())
                 {
-                    inserted = await db.SaveAsync(model, false);
+                    inserted = await db.SaveAsync(model, references ?? false);
                 }
                 scope.Complete();
             }
@@ -316,7 +315,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
         public void Trash(WebhookDefinition model, bool? references = null)
         {
             model.IsDeleted = true;
-            Save(model, false);
+            Save(model, references ?? false);
         }
 
         public void TrashAll(IEnumerable<WebhookDefinition> models, bool? references = null)
@@ -325,7 +324,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             {
                 model.IsDeleted = true;
             }
-            SaveAll(models, false);
+            SaveAll(models, references ?? false);
         }
 
         public Task TrashAllAsync(IEnumerable<WebhookDefinition> models, bool? references = null, CancellationToken token = default)
@@ -334,40 +333,40 @@ namespace Reexmonkey.Webhooks.Core.Repositories.Ormlite
             {
                 model.IsDeleted = true;
             }
-            return SaveAllAsync(models, false);
+            return SaveAllAsync(models, references ?? false);
         }
 
         public List<WebhookDefinition> TrashAllByKeys(IEnumerable<Guid> keys, bool? references = null, int? offset = null, int? count = null)
         {
-            var matches = FindAllByKeys(keys, false, offset, count);
-            if (matches.Any()) TrashAll(matches, false);
+            var matches = FindAllByKeys(keys, references ?? false, offset, count);
+            if (matches.Any()) TrashAll(matches, references ?? false);
             return matches;
         }
 
         public async Task<List<WebhookDefinition>> TrashAllByKeysAsync(IEnumerable<Guid> keys, bool? references = null, int? offset = null, int? count = null, CancellationToken token = default)
         {
-            var matches = await FindAllByKeysAsync(keys, false, offset, count, token);
-            if (matches.Any()) await TrashAllAsync(matches, false, token);
+            var matches = await FindAllByKeysAsync(keys, references ?? false, offset, count, token);
+            if (matches.Any()) await TrashAllAsync(matches, references ?? false, token);
             return matches;
         }
 
         public Task TrashAsync(WebhookDefinition model, bool? references = null)
         {
             model.IsDeleted = true;
-            return SaveAsync(model, false);
+            return SaveAsync(model, references ?? false);
         }
 
         public WebhookDefinition TrashByKey(Guid key, bool? references = null)
         {
-            var match = FindByKey(key, false);
-            if (match != null) Trash(match, false);
+            var match = FindByKey(key, references ?? false);
+            if (match != null) Trash(match, references ?? false);
             return match;
         }
 
         public async Task<WebhookDefinition> TrashByKeyAsync(Guid key, bool? references = null, CancellationToken token = default)
         {
-            var match = await FindByKeyAsync(key, false);
-            if (match != null) await TrashAsync(match, false);
+            var match = await FindByKeyAsync(key, references ?? false);
+            if (match != null) await TrashAsync(match, references ?? false);
             return match;
         }
     }

@@ -9,7 +9,7 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Specifies a service request to create a webhook definition.
     /// </summary>
     [Api("Specifies a service request to create a webhook definition.")]
-    public abstract class CreateWebhookDefinitionBase : IPost, IReturn<List<WebhookDefinitionResponse>>
+    public abstract class CreateWebhookDefinitionBase : IPost, IReturn<WebhookDefinitionResponse>
     {
         /// <summary>
         /// The unique identifier of the publisher of the webhook definition.
@@ -39,6 +39,12 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
         public string Description { get; set; }
 
         /// <summary>
+        /// The password to authenticate the publisher.
+        /// </summary>
+        [ApiMember(Description = "The password to authenticate the publisher.", IsRequired = true)]
+        public string Password { get; set; }
+
+        /// <summary>
         /// Keywords to mark or identify the webhook definition.
         /// </summary>
         [ApiMember(Description = "Keywords to mark or identify the webhook definition.", IsRequired = false)]
@@ -49,9 +55,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to create a webhook definition.
     /// </summary>
     [Api("Represents a service request to create a webhook definition.")]
-    [Tag("Create")]
     [Tag("Webhooks")]
     [Tag("Definitions")]
+    [Tag("Creations")]
     [Route("/webhooks/publishers/{PublisherId}/definitions", "POST")]
     public sealed class CreateWebhookDefinition : CreateWebhookDefinitionBase
     {
@@ -61,9 +67,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to create a webhook definition.
     /// </summary>
     [Api("Represents a service request to create a webhook definition.")]
-    [Tag("Create")]
     [Tag("Webhooks")]
     [Tag("Definitions")]
+    [Tag("Creations")]
     [Tag("Async")]
     [Route("/async/wwebhooks/publishers/{PublisherId}/definitions", "POST")]
     public sealed class CreateWebhookDefinitionAsync : CreateWebhookDefinitionBase

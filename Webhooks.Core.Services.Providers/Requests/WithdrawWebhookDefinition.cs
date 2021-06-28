@@ -6,10 +6,10 @@ using System;
 namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
 {
     /// <summary>
-    /// Specifies a service request to publish a webhook definition.
+    /// Specifies a service request to withdraw a webhook definition.
     /// </summary>
-    [Api("Specifies a service request to publish a webhook definition.")]
-    public class UnpublishWebhookDefinitionsBase : IDelete, IReturn<WebhookDefinitionResponse>
+    [Api("Specifies a service request to withdraw a webhook definition.")]
+    public class WithdrawWebhookDefinitionsBase : IPost, IReturn<WebhookDefinitionResponse>
     {
         /// <summary>
         /// The unique identifier of the publisher, who created the webhook definition.
@@ -24,34 +24,34 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
         public WebhookDefinition Webhook { get; set; }
 
         /// <summary>
-        /// The password to publisherize the publish operation.
+        /// The password to authorize the publish operation.
         /// </summary>
-        [ApiMember(Description = "The password to publisherize the publish operation.", IsRequired = true)]
+        [ApiMember(Description = "The password to authorize the publish operation.", IsRequired = true)]
         public string Password { get; set; }
     }
 
     /// <summary>
-    /// Represents a service request to publish a webhook definition in a synchronous operation.
+    /// Represents a service request to withdraw a published webhook definition in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to publish a webhook definition in a synchronous operation.")]
-    [Tag("Unpublish")]
-    [Tag("Webhook")]
-    [Tag("Definition")]
-    [Route("/webhooks/publishers/{PublisherId}/definitions", "DELETE")]
-    public sealed class UnpublishWebhookDefinition : UnpublishWebhookDefinitionsBase
+    [Tag("Webhooks")]
+    [Tag("Definitions")]
+    [Tag("Withdrawals")]
+    [Route("/webhooks/publishers/{PublisherId}/definitions", "POST")]
+    public sealed class WithdrawWebhookDefinition : WithdrawWebhookDefinitionsBase
     {
     }
 
     /// <summary>
-    /// Represents a service request to publish a webhook definition in an asynchronous operation.
+    /// Represents a service request to withdraw a published webhook definition in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to publish a webhook definition in an asynchronous operation.")]
-    [Tag("Unpublish")]
-    [Tag("Webhook")]
-    [Tag("Definition")]
+    [Tag("Webhooks")]
+    [Tag("Definitions")]
+    [Tag("Withdrawals")]
     [Tag("Async")]
-    [Route("/async/webhooks/publishers/{PublisherId}/definitions", "DELETE")]
-    public sealed class UnpublishWebhookDefinitionAsync : UnpublishWebhookDefinitionsBase
+    [Route("/async/webhooks/publishers/{PublisherId}/definitions", "POST")]
+    public sealed class WithdrawWebhookDefinitionAsync : WithdrawWebhookDefinitionsBase
     {
     }
 }

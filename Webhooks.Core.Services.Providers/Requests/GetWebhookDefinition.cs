@@ -21,11 +21,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to retrieve a webhook in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to retrieve a webhook in a synchronous operation.")]
-    [Tag("Get")]
     [Tag("Webhooks")]
     [Tag("Definitions")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/definitions/{Id}", "GET")]
+    [Tag("Retrievals")]
+    [Route("/webhooks/definitions/{Id}", "GET")]
     public sealed class GetWebhookDefinition : GetWebhookDefinitionBase
     {
     }
@@ -34,9 +33,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to retrieve a webhook in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to retrieve a webhook in an asynchronous operation.")]
-    [Tag("Get")]
     [Tag("Webhooks")]
     [Tag("Definitions")]
+    [Tag("Retrievals")]
     [Tag("Async")]
     [Route("/async/webhooks/definitions/{Id}", "GET")]
     public sealed class GetWebhookDefinitionAsync : GetWebhookDefinitionBase

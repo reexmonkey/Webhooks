@@ -29,9 +29,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// </summary>
     [Api("Represents a service request to delete a batch of webhook publishers in a synchronous operation.")]
     [Tag("Batch")]
-    [Tag("Delete")]
     [Tag("Webhooks")]
     [Tag("Publishers")]
+    [Tag("Deletions")]
     [Route("/webhooks/publishers", "DELETE")]
     public sealed class BatchDeleteWebhookPublishers : BatchDeleteWebhookPublishersBase
     {
@@ -42,9 +42,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// </summary>
     [Api("Represents a service request to delete a batch of webhook publishers in an asynchronous operation.")]
     [Tag("Batch")]
-    [Tag("Delete")]
     [Tag("Webhooks")]
     [Tag("Publishers")]
+    [Tag("Deletions")]
     [Tag("Async")]
     [Route("/async/webhooks/publishers", "DELETE")]
     public sealed class BatchDeleteWebhookPublishersAsync : BatchDeleteWebhookPublishersBase

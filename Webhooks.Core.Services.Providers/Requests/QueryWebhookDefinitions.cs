@@ -55,9 +55,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to query for webhook definitions in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to query for webhook definitions in a synchronous operation.")]
-    [Tag("Query")]
     [Tag("Webhooks")]
     [Tag("Definitions")]
+    [Tag("Queries")]
     [Route("/webhooks/definitions", "GET")]
     public sealed class QueryWebhookDefinitions : QueryWebhookDefinitionsBase
     {
@@ -67,9 +67,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to query for webhook definitions in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to query for webhook definitions in an asynchronous operation.")]
-    [Tag("Query")]
     [Tag("Webhooks")]
     [Tag("Definitions")]
+    [Tag("Queries")]
     [Tag("Async")]
     [Route("/async/webhooks/definitions", "GET")]
     public sealed class QueryWebhookDefinitionsAsync : QueryWebhookDefinitionsBase

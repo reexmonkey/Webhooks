@@ -13,28 +13,28 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     public abstract class BatchEraseWebhookDefinitionsBase : IDelete, IReturn<List<WebhookDefinitionResponse>>
     {
         /// <summary>
-        /// The name of the webhook definitions associated with the publisher.
-        /// </summary>
-        [ApiMember(Description = "The name of the webhook definitions associated with the publisher.", IsRequired = true)]
-        public List<WebhookDefinition> Definitions { get; set; }
-
-        /// <summary>
-        /// Specifies whether the webhook definitions should be irreversibly erased or reversibly marked for deletion.
-        /// </summary>
-        [ApiMember(Description = "Specifies whether the webhook definitions should be irreversibly erased or reversibly marked for deletion.", IsRequired = true)]
-        public bool Permanently { get; set; }
-
-        /// <summary>
         /// The unique identifier of the publisher, who created the webhook definition.
         /// </summary>
         [ApiMember(Description = "The unique identifier of the publisher, who created the webhook definition.", IsRequired = true)]
         public Guid PublisherId { get; set; }
 
         /// <summary>
-        /// The password to publisherize the publish operation.
+        /// The name of the webhook definitions associated with the publisher.
         /// </summary>
-        [ApiMember(Description = "The password to publisherize the publish operation.", IsRequired = true)]
+        [ApiMember(Description = "The name of the webhook definitions associated with the publisher.", IsRequired = true)]
+        public List<WebhookDefinition> Definitions { get; set; }
+
+        /// <summary>
+        /// The password to authorize the publish operation.
+        /// </summary>
+        [ApiMember(Description = "The password to authorize the publish operation.", IsRequired = true)]
         public string Password { get; set; }
+
+        /// <summary>
+        /// Specifies whether the webhook definitions should be irreversibly erased or reversibly marked for deletion.
+        /// </summary>
+        [ApiMember(Description = "Specifies whether the webhook definitions should be irreversibly erased or reversibly marked for deletion.", IsRequired = true)]
+        public bool Permanently { get; set; }
     }
 
     /// <summary>
@@ -42,10 +42,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// </summary>
     [Api("Represents a service request to delete a batch of webhook definitions in a synchronous operation.")]
     [Tag("Batch")]
-    [Tag("Erase")]
     [Tag("Webhooks")]
     [Tag("Definitions")]
-    [Route("/webhooks/definitions", "DELETE")]
+    [Tag("Deletions")]
+    [Route("/webhooks/publishers/{PublisherId}/definitions", "DELETE")]
     public sealed class BatchEraseWebhookDefinitions : BatchEraseWebhookDefinitionsBase
     {
     }
@@ -55,11 +55,11 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// </summary>
     [Api("Represents a service request to delete a batch of webhook definitions in an asynchronous operation.")]
     [Tag("Batch")]
-    [Tag("Erase")]
     [Tag("Webhooks")]
     [Tag("Definitions")]
+    [Tag("Deletions")]
     [Tag("Async")]
-    [Route("/async/webhooks/definitions", "DELETE")]
+    [Route("/async/webhooks/publishers/{PublisherId}/definitions", "DELETE")]
     public sealed class BatchEraseWebhookDefinitionsAsync : BatchEraseWebhookDefinitionsBase
     {
     }

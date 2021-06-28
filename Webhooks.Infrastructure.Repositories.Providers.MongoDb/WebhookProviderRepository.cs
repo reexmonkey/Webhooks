@@ -1,7 +1,6 @@
 ﻿using MongoDB.Driver;
 using reexmonkey.xmisc.backbone.repositories.contracts.extensions;
 using Reexmonkey.Webhooks.Core.Domain.Concretes.Models;
-using Reexmonkey.Webhooks.Core.Repositories.Contracts;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -13,19 +12,19 @@ using System.Transactions;
 
 namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
 {
-    public class WebhookProviderRepository : IWebhookProviderRepository
+    public class WebhookProviderRepository : IWebhookPublisherRepository
     {
-        private readonly IWebhookDefinitionRepository webhookDefinitionRepository;
+        private readonly IWebhookDefinitionRepository definitionRepository;
         private readonly IMongoDatabase database;
         private readonly MongoCollectionSettings settings;
         private readonly IMongoCollection<WebhookPublisher> collection;
 
         public WebhookProviderRepository(
-            IWebhookDefinitionRepository webhookDefinitionRepository,
+            IWebhookDefinitionRepository definitionRepository,
             IMongoDatabase database,
             MongoCollectionSettings settings)
         {
-            this.webhookDefinitionRepository = webhookDefinitionRepository ?? throw new ArgumentNullException(nameof(webhookDefinitionRepository));
+            this.definitionRepository = definitionRepository ?? throw new ArgumentNullException(nameof(definitionRepository));
             this.database = database ?? throw new ArgumentNullException(nameof(database));
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
             collection = database.GetCollection<WebhookPublisher>(nameof(WebhookPublisher), settings);
@@ -219,10 +218,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             model.IsDeleted = false;
             if (references.HasValue
                 && references.Value
-                && model.Webhooks != null
-                && model.Webhooks.Any())
+                && model.Definitions != null
+                && model.Definitions.Any())
             {
-                model.Webhooks.ForEach(x => x.IsDeleted = false);
+                model.Definitions.ForEach(x => x.IsDeleted = false);
             }
             Save(model, references);
         }
@@ -235,10 +234,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
                 foreach (var model in models)
                 {
                     model.IsDeleted = false;
-                    if (model.Webhooks != null && model.Webhooks.Any())
-                        webhooks.AddRange(model.Webhooks);
+                    if (model.Definitions != null && model.Definitions.Any())
+                        webhooks.AddRange(model.Definitions);
                 }
-                if (webhooks.Any()) webhookDefinitionRepository.RestoreAll(webhooks, references);
+                if (webhooks.Any()) definitionRepository.RestoreAll(webhooks, references);
             }
             SaveAll(models, references);
         }
@@ -251,10 +250,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
                 foreach (var model in models)
                 {
                     model.IsDeleted = false;
-                    if (model.Webhooks != null && model.Webhooks.Any())
-                        webhooks.AddRange(model.Webhooks);
+                    if (model.Definitions != null && model.Definitions.Any())
+                        webhooks.AddRange(model.Definitions);
                 }
-                if (webhooks.Any()) await webhookDefinitionRepository.RestoreAllAsync(webhooks, references, token);
+                if (webhooks.Any()) await definitionRepository.RestoreAllAsync(webhooks, references, token);
             }
             await SaveAllAsync(models, references, token);
         }
@@ -283,10 +282,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             model.IsDeleted = false;
             if (references.HasValue
                 && references.Value
-                && model.Webhooks != null
-                && model.Webhooks.Any())
+                && model.Definitions != null
+                && model.Definitions.Any())
             {
-                webhookDefinitionRepository.RestoreAll(model.Webhooks, references);
+                definitionRepository.RestoreAll(model.Definitions, references);
             }
             return SaveAsync(model, references);
         }
@@ -314,7 +313,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
                 if (!references.HasValue || !references.Value)
                 {
                     candidate = model.CreateCopy();
-                    candidate.Webhooks.Clear();
+                    candidate.Definitions.Clear();
                 }
                 var result = collection.ReplaceOne(x => x.Id == model.Id, candidate, new ReplaceOptions { IsUpsert = true });
                 persisted = result.IsAcknowledged;
@@ -336,7 +335,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
                     if (!references.HasValue || !references.Value)
                     {
                         candidate = model.CreateCopy();
-                        candidate.Webhooks.Clear();
+                        candidate.Definitions.Clear();
                     }
                     candidates.Add(candidate);
                     keys.Add(candidate.Id);
@@ -381,7 +380,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
                     if (!references.HasValue || !references.Value)
                     {
                         candidate = model.CreateCopy();
-                        candidate.Webhooks.Clear();
+                        candidate.Definitions.Clear();
                     }
                     candidates.Add(candidate);
                     keys.Add(candidate.Id);
@@ -427,7 +426,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
                 if (!references.HasValue || !references.Value)
                 {
                     candidate = model.CreateCopy();
-                    candidate.Webhooks.Clear();
+                    candidate.Definitions.Clear();
                 }
                 var result = await collection.ReplaceOneAsync(x => x.Id == model.Id, candidate, new ReplaceOptions { IsUpsert = true });
                 persisted = result.IsAcknowledged;
@@ -441,10 +440,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             model.IsDeleted = true;
             if (references.HasValue
                 && references.Value
-                && model.Webhooks != null
-                && model.Webhooks.Any())
+                && model.Definitions != null
+                && model.Definitions.Any())
             {
-                webhookDefinitionRepository.TrashAll(model.Webhooks);
+                definitionRepository.TrashAll(model.Definitions);
             }
             Save(model, references);
         }
@@ -457,10 +456,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
                 foreach (var model in models)
                 {
                     model.IsDeleted = true;
-                    if (model.Webhooks != null && model.Webhooks.Any())
-                        webhooks.AddRange(model.Webhooks);
+                    if (model.Definitions != null && model.Definitions.Any())
+                        webhooks.AddRange(model.Definitions);
                 }
-                if (webhooks.Any()) webhookDefinitionRepository.TrashAll(webhooks, references);
+                if (webhooks.Any()) definitionRepository.TrashAll(webhooks, references);
             }
             SaveAll(models, references);
         }
@@ -473,10 +472,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
                 foreach (var model in models)
                 {
                     model.IsDeleted = true;
-                    if (model.Webhooks != null && model.Webhooks.Any())
-                        webhooks.AddRange(model.Webhooks);
+                    if (model.Definitions != null && model.Definitions.Any())
+                        webhooks.AddRange(model.Definitions);
                 }
-                if (webhooks.Any()) await webhookDefinitionRepository.TrashAllAsync(webhooks, references, token);
+                if (webhooks.Any()) await definitionRepository.TrashAllAsync(webhooks, references, token);
             }
             await SaveAllAsync(models, references, token);
         }
@@ -500,10 +499,10 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
             model.IsDeleted = true;
             if (references.HasValue
                 && references.Value
-                && model.Webhooks != null
-                && model.Webhooks.Any())
+                && model.Definitions != null
+                && model.Definitions.Any())
             {
-                await webhookDefinitionRepository.TrashAllAsync(model.Webhooks, references);
+                await definitionRepository.TrashAllAsync(model.Definitions, references);
             }
             await SaveAsync(model, references);
         }

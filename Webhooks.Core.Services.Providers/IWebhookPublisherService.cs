@@ -7,7 +7,7 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Contracts
 {
     public interface IWebhookPublisherService
     {
-        // Publisher profile
+        #region publisher profile
 
         WebhookPublisherResponse Post(CreateWebhookPublisher request);
 
@@ -41,7 +41,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Contracts
 
         Task<List<WebhookPublisherResponse>> Get(QueryWebhookPublishersAsync request);
 
-        //Web definitions
+        #endregion publisher profile
+
+        #region webhook definition
 
         WebhookDefinitionResponse Post(CreateWebhookDefinition request);
 
@@ -59,9 +61,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Contracts
 
         List<WebhookDefinitionResponse> Post(BatchPublishWebhookDefinitions request);
 
-        WebhookDefinitionResponse Post(UnpublishWebhookDefinition request);
+        WebhookDefinitionResponse Post(WithdrawWebhookDefinition request);
 
-        List<WebhookDefinitionResponse> Post(BatchUnpublishWebhookDefinitions request);
+        List<WebhookDefinitionResponse> Post(BatchWithdrawWebhookDefinitions request);
 
         Task<WebhookDefinitionResponse> Post(CreateWebhookDefinitionAsync request);
 
@@ -79,13 +81,18 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Contracts
 
         Task<List<WebhookDefinitionResponse>> Post(BatchPublishWebhookDefinitionsAsync request);
 
-        Task<WebhookDefinitionResponse> Post(UnpublishWebhookDefinitionAsync request);
+        Task<WebhookDefinitionResponse> Post(WithdrawWebhookDefinitionAsync request);
 
-        Task<List<WebhookDefinitionResponse>> Post(BatchUnpublishWebhookDefinitionsAsync request);
+        Task<List<WebhookDefinitionResponse>> Post(BatchWithdrawWebhookDefinitionsAsync request);
 
-        // Webhook Events
+        #endregion webhook definition
+
+        #region webhook event
+
         WebhookEventResponse Post(RaiseWebhookEvent request);
 
         Task<WebhookEventResponse> Post(RaiseWebhookEventAsync request);
+
+        #endregion webhook event
     }
 }

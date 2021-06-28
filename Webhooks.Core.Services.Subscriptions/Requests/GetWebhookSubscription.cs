@@ -22,11 +22,10 @@ namespace Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests
     /// Represents a service request to retrieve a webhook subscription in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to retrieve a webhook subscription in a synchronous operation.")]
-    [Tag("Get")]
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
-    [Tag("Sync")]
-    [Route("/sync/webhooks/subscriptions/{Id}", "GET")]
+    [Tag("Retrievals")]
+    [Route("/webhooks/subscriptions/{Id}", "GET")]
     public sealed class GetWebhookSubscription : GetWebhookSubscriptionBase
     {
     }
@@ -35,9 +34,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Subscriptions.Requests
     /// Represents a service request to retrieve a webhook subscription in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to retrieve a webhook subscription in an asynchronous operation.")]
-    [Tag("Get")]
     [Tag("Webhooks")]
     [Tag("Subscriptions")]
+    [Tag("Retrievals")]
     [Tag("Async")]
     [Route("/async/webhooks/subscriptions/{Id}", "GET")]
     public sealed class GetWebhookSubscriptionAsync : GetWebhookSubscriptionBase

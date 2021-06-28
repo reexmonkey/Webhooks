@@ -1,7 +1,6 @@
 ﻿using MongoDB.Driver;
 using reexmonkey.xmisc.backbone.repositories.contracts.extensions;
 using Reexmonkey.Webhooks.Core.Domain.Concretes.Models;
-using Reexmonkey.Webhooks.Core.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -230,7 +229,6 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
         {
             if (references.HasValue && references.Value)
             {
-                var webhooks = new List<WebhookDefinition>();
                 foreach (var model in models)
                 {
                     model.IsDeleted = false;
@@ -292,54 +290,62 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
 
         public long SaveAll(IEnumerable<WebhookDefinition> models, bool? references = true)
         {
-            var saves = 0L;
+            var count = 0L;
             using (var scope = TransactionScopeOption.Required.AsTransactionScope())
             {
                 var keys = new List<Guid>();
                 foreach (var model in models)
-                {
                     keys.Add(model.Id);
+
+                var matches = FindAllByKeys(keys, references ?? true);
+                var similar = Enumerable.Empty<WebhookDefinition>();
+                var different = Enumerable.Empty<WebhookDefinition>();
+                if (matches.Any())
+                {
+                    similar = models.Intersect(matches);
+                    different = models.Except(matches);
                 }
 
-                var matches = FindAllByKeys(keys, references: references);
-                var similar = models.Intersect(matches);
-                var different = matches.Any() ? models.Except(matches) : models;
-
                 var requests = new List<WriteModel<WebhookDefinition>>();
-                if (similar.Any())
+                if (similar.Any()) //update
                 {
                     foreach (var model in similar)
                         requests.Add(new ReplaceOneModel<WebhookDefinition>(Builders<WebhookDefinition>.Filter.Where(x => x.Id == model.Id), model));
+
                     var result = collection.BulkWrite(requests);
-                    saves += result.IsAcknowledged ? result.MatchedCount : 0L;
+                    count += result.IsAcknowledged ? result.MatchedCount : 0L;
                 }
 
-                if (different.Any())
+                if (different.Any()) //insert
                 {
                     requests.Clear();
                     foreach (var model in different)
                         requests.Add(new InsertOneModel<WebhookDefinition>(model));
                     var results = collection.BulkWrite(requests);
-                    saves += results.IsAcknowledged ? results.InsertedCount : 0L;
+                    count += results.IsAcknowledged ? results.InsertedCount : 0L;
                 }
                 scope.Complete();
             }
-            return saves;
+            return count;
         }
 
         public async Task<long> SaveAllAsync(IEnumerable<WebhookDefinition> models, bool? references = true, CancellationToken token = default)
         {
-            var saves = 0;
+            var count = 0L;
             using (var scope = TransactionScopeOption.Required.AsTransactionScopeFlow())
             {
                 var keys = new List<Guid>();
                 foreach (var model in models)
-                {
                     keys.Add(model.Id);
-                }
+
                 var matches = await FindAllByKeysAsync(keys, references: references, token: token);
-                var similar = models.Intersect(matches);
-                var different = matches.Any() ? models.Except(matches) : models;
+                var similar = Enumerable.Empty<WebhookDefinition>();
+                var different = Enumerable.Empty<WebhookDefinition>();
+                if (matches.Any())
+                {
+                    similar = models.Intersect(matches);
+                    different = models.Except(matches);
+                }
 
                 if (similar.Any())
                 {
@@ -350,7 +356,7 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
                         requests.Add(new ReplaceOneModel<WebhookDefinition>(Builders<WebhookDefinition>.Filter.Where(x => x.Id == model.Id), model));
                     }
                     var result = await collection.BulkWriteAsync(requests, cancellationToken: token);
-                    saves += result.IsAcknowledged ? (int)result.MatchedCount : 0;
+                    count += result.IsAcknowledged ? result.MatchedCount : 0L;
                 }
 
                 if (different.Any())
@@ -362,11 +368,11 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
                         requests.Add(new InsertOneModel<WebhookDefinition>(model));
                     }
                     var result = await collection.BulkWriteAsync(requests, cancellationToken: token);
-                    saves += result.IsAcknowledged ? (int)result.InsertedCount : 0;
+                    count += result.IsAcknowledged ? result.InsertedCount : 0L;
                 }
                 scope.Complete();
             }
-            return saves;
+            return count;
         }
 
         public async Task<bool> SaveAsync(WebhookDefinition model, bool? references = true, CancellationToken token = default)
@@ -389,24 +395,18 @@ namespace Reexmonkey.Webhooks.Core.Repositories.MongoDb
 
         public void TrashAll(IEnumerable<WebhookDefinition> models, bool? references = null)
         {
-            if (references.HasValue && references.Value)
+            foreach (var model in models)
             {
-                foreach (var model in models)
-                {
-                    model.IsDeleted = true;
-                }
+                model.IsDeleted = true;
             }
             SaveAll(models, references);
         }
 
         public async Task TrashAllAsync(IEnumerable<WebhookDefinition> models, bool? references = null, CancellationToken token = default)
         {
-            if (references.HasValue && references.Value)
+            foreach (var model in models)
             {
-                foreach (var model in models)
-                {
-                    model.IsDeleted = true;
-                }
+                model.IsDeleted = true;
             }
             await SaveAllAsync(models, references, token);
         }

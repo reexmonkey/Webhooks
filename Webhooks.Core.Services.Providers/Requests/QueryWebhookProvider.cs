@@ -64,9 +64,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to query for webhook publishers in a synchronous operation.
     /// </summary>
     [Api("Represents a service request to query for webhook publishers in a synchronous operation.")]
-    [Tag("Query")]
     [Tag("Webhooks")]
     [Tag("Publishers")]
+    [Tag("Queries")]
     [Route("/webhooks/publishers", "GET")]
     public sealed class QueryWebhookPublishers : QueryWebhookPublishersBase
     {
@@ -76,9 +76,9 @@ namespace Reexmonkey.Webhooks.Core.Services.Publishers.Requests
     /// Represents a service request to query for webhook publishers in an asynchronous operation.
     /// </summary>
     [Api("Represents a service request to query for webhook publishers in an asynchronous operation.")]
-    [Tag("Query")]
     [Tag("Webhooks")]
     [Tag("Publishers")]
+    [Tag("Queries")]
     [Tag("Async")]
     [Route("/async/webhooks/publishers", "GET")]
     public sealed class QueryWebhookPublishersAsync : QueryWebhookPublishersBase
