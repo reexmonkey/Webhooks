@@ -48,9 +48,9 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
         public string Description { get; set; }
 
         /// <summary>
-        /// Keywords to mark or identify the webhook definition.
+        /// Keywords to ássociate with the webhook definition.
         /// </summary>
-        [ApiMember(Description = "Keywords to mark or identify the webhook definition.", IsRequired = false)]
+        [ApiMember(Description = "Keywords to associate with the webhook definition.", IsRequired = false)]
         public List<string> Tags { get; set; }
 
         /// <summary>

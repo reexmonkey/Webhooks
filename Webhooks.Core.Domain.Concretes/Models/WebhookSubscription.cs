@@ -38,7 +38,7 @@ namespace Reexmonkey.Webhooks.Core.Domain.Concretes.Models
         /// The endpoint URI of the webhook subscription.
         /// </summary>
         [ApiMember(Description = "The endpoint URI of the webhook subscription.", IsRequired = true)]
-        public Uri EndPointUri { get; set; }
+        public Uri Url { get; set; }
 
         /// <summary>
         /// The secret to sign, verify, encrypt or decrypt the payload of a webhook.
